@@ -1,22 +1,22 @@
 #include "Solution.h"
 
-void Solution::Insert(unsigned i, unsigned k1, unsigned j, unsigned k2)  {
-
-    unsigned v = sol[k1][i];
-    sol[k2].insert(sol[k2].begin() + j, v);
-    sol[k1].erase(sol[k1].begin() + i);
-
-}
-
-// This might be faster.
 // void Solution::Insert(unsigned i, unsigned k1, unsigned j, unsigned k2)  {
 
-//     sol[k2].emplace_back(sol[k1][i]);
-//     std::swap(sol[k2].back(), sol[k2][j]);
-//     std::swap(sol[k1][i], sol[k1].back());
-//     sol[k1].pop_back();
+//     unsigned v = sol[k1][i];
+//     sol[k2].insert(sol[k2].begin() + j, v);
+//     sol[k1].erase(sol[k1].begin() + i);
 
 // }
+
+// This might be faster.
+void Solution::Insert(unsigned i, unsigned k1, unsigned j, unsigned k2)  {
+
+    sol[k2].emplace_back(sol[k1][i]);
+    std::swap(sol[k2].back(), sol[k2][j]);
+    std::swap(sol[k1][i], sol[k1].back());
+    sol[k1].pop_back();
+
+}
 
 bool Solution::ExploreInsert(bool objective) {
 

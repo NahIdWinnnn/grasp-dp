@@ -27,7 +27,7 @@ bool Solution::ExploreDP() {
         unsigned len = __builtin_popcount(mask), pass = 0;
 
         for (unsigned i = 0; i < len; i++) {
-            unsigned u = __builtin_ctz(mask - pass);
+            unsigned u = __builtin_ctz(mask ^ pass);
             pass |= 1 << u;
 
             for (unsigned v = 0, idx = 0; v < instance.nK; v++)
@@ -41,35 +41,41 @@ bool Solution::ExploreDP() {
                 }
 
                 for (Solution &solution : dp[mask][i]) {
-                    double accumulatedObjective = 0.0;
-                    std::random_shuffle(solution.sol[u].begin(), solution.sol[u].end());
-                    for (unsigned item : solution.sol[u]) {
+
+                    unsigned clusterSize = solution.sol[u].size();
+                    for (unsigned pos = 0; pos < clusterSize; ++pos) {
+
+                        unsigned r = rndUns(pos, clusterSize - 1);
+                        std::swap(solution.sol[u][pos], solution.sol[u][r]);
+
+                        unsigned item = solution.sol[u][pos];
                         // Check feasibility of moving 'item' from cluster u to cluster v
-                        if (!solution.FeasibleInsert(item, u, v)) break;
+                        if (!solution.FeasibleInsert(item, u, v)) {
+                            continue;
+                        }
 
                         // If we reached here, moving 'item' from u to v is feasible
                         double deltaObj = solution.EvaluateInsert(true, item, u, v);
-                        accumulatedObjective += deltaObj;
-                        if (parameters.LSe) {
-                            solution.DataUpdateInsert(true, item, u, v);
+                        if (deltaObj < 0) {
+                            solution.obj += deltaObj;
+                            if (parameters.LSe) {
+                                solution.DataUpdateInsert(true, item, u, v);
+                            }
+                            solution.Insert(pos, u, solution.sol[v].size(), v);
                         }
-                        solution.Insert(item, u, solution.sol[v].size(), v);
+                    }
 
-                        // Is moving 'item' from u to v improving?
-                        if (accumulatedObjective < 0) {
-                            assert(new_mask < pow2);
-                            assert(idx < dp[new_mask].size());
-                            dp[new_mask][idx].emplace_back(solution);
-                            for (int c = int(dp[new_mask][idx].size()) - 1; c > 0; c--) {
-                                if (dp[new_mask][idx][c].obj < dp[new_mask][idx][c - 1].obj) {
-                                    std::swap(dp[new_mask][idx][c], dp[new_mask][idx][c - 1]);
-                                } else {
-                                    break;
-                                }
+                    if (dp[new_mask][idx].empty() or solution.obj < dp[new_mask][idx].back().obj) {
+                        dp[new_mask][idx].emplace_back(solution);
+                        for (int c = int(dp[new_mask][idx].size()) - 1; c > 0; c--) {
+                            if (dp[new_mask][idx][c].obj < dp[new_mask][idx][c - 1].obj) {
+                                std::swap(dp[new_mask][idx][c], dp[new_mask][idx][c - 1]);
+                            } else {
+                                break;
                             }
-                            if (dp[new_mask][idx].size() > parameters.DPc) {
-                                dp[new_mask][idx].pop_back();
-                            }
+                        }
+                        if (dp[new_mask][idx].size() > parameters.DPc) {
+                            dp[new_mask][idx].pop_back();
                         }
                     }
                 }
@@ -81,9 +87,9 @@ bool Solution::ExploreDP() {
 
     Solution bestSolution = *this;
     for (int last = 0; last < instance.nK; last++) {
-        for (Solution solution : dp[pow2 - 1][last]) {
+        for (Solution &solution : dp[pow2 - 1][last]) {
             if (solution.obj < bestSolution.obj) {
-                std::cout << "found better solution with obj " << solution.obj << " vs " << bestSolution.obj << std::endl;
+                // std::cout << "found better solution with obj " << solution.obj << " vs " << bestSolution.obj << std::endl;
                 std::swap(bestSolution, solution);
                 improved = true;
             }

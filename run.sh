@@ -6,8 +6,8 @@ mkdir results/logs/evolution
 mkdir results/logs/solutions
 mkdir results/logs/objectives
 
-config_params='--schema 2P-GRASP-DP --version rnd-grd --m 8 --block 38 --delta 5 --exploration first --debug 0'
-fixed_params='--termination_criteria iter --termination_value 100 --logs 1 --move ext --efficient 1'
+config_params='--schema 2P-R-GRASP --version rnd-grd --m 8 --block 38 --delta 5 --exploration first --debug 0'
+fixed_params='--termination_criteria iter --termination_value 1000 --logs 1 --move ext --efficient 1'
 
-# ./MCGP --instance 'instances/tsplib/a280_05_2.txt' --seed 998244353 $fixed_params $config_params
-./MCGP --instance 'normalized_instances/tsplib/a280_05_2.txt' --seed 998244353 $fixed_params $config_params
+# ./MCGP --instance 'instances/tsplib/a280_05_4.txt' --seed 998244353 $fixed_params $config_params
+./MCGP --instance 'normalized_instances/tsplib/a280_10_3.txt' --seed 998244353 $fixed_params $config_params

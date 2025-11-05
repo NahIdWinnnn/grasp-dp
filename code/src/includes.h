@@ -89,7 +89,7 @@
      // TS
         int      TSn    = 10;         // Maximum number of elements in the Tabu list
      // DP
-        int      DPc    = 3;          // Number of best candidates to consider in DP layers
+        int      DPc    = 1;          // Number of best candidates to consider in DP layers
     };
 
     extern Parameters parameters;

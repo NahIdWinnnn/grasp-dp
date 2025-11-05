@@ -238,13 +238,7 @@ void LoadInstance(const string& pathInstance) {
             for (unsigned t = 0; t < instance.nT; t++)
                 file >> instance.WL[k][t];
             for (unsigned t = 0; t < instance.nT; t++)
-                cout << instance.WL[k][t] << " ";
-            cout << "\n";
-            for (unsigned t = 0; t < instance.nT; t++)
                 file >> instance.WU[k][t];
-            for (unsigned t = 0; t < instance.nT; t++)
-                cout << instance.WU[k][t] << " ";
-            cout << "\n";
         }
     }
 
@@ -254,10 +248,6 @@ void LoadInstance(const string& pathInstance) {
 }
 
 void abstract() {
-    cout << "\n Hybrid Meta-heuristic for the Balanced Clustering Problem";
-    cout << "\n Author: A. Herrán";
-    cout << "\n Date: June 2024\n";
-
     cout << "\n Structure: There are multiple islands, each containing one or more metaheuristic GRASP algorithms (by default, the code assigns one metaheuristic per island; this cannot be changed in the configuration file and must be modified directly in the code).\n";
     cout << "\n Operation: For each global iteration, one iteration is executed on every island. When an island performs an iteration, it means that all metaheuristics within that island also execute an iteration. When a metaheuristic performs an iteration, it refers to running the entire algorithm process once — including generating a new solution, validating it, and optimizing it.\n";
 }
