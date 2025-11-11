@@ -18,19 +18,30 @@ Algorithm::Algorithm(const string& pathInstance, unsigned ne) {
         tokens = Split(tokens.back(), '.');
         string instance = tokens[0];
 
-        fileEvol.open("results/logs/evolution/" + instance + "_" + to_string(ne) + ".txt");
+        // Route logs into dp_logs when using a construction schema that ends with "-DP",
+        // otherwise use pred_logs. Keep the same subfolders (evolution, solutions, objectives).
+        string baseDir = "results/logs/pred_logs/";
+
+        if (parameters.CONm == "2P-GRASP-DP") {
+            baseDir = "results/logs/dp_logs/";
+        }
+        else if (parameters.CONm == "2P-HGRASP-DP") {
+            baseDir = "results/logs/hdp_logs/";
+        }
+
+        fileEvol.open(baseDir + "evolution/" + instance + "_" + to_string(ne) + "_" + parameters.CONm + ".txt");
         if (!fileEvol) {
             cout << "\n The fileEvol file can not be opened.";
             exit(1);
         }
 
-        fileSolu.open("results/logs/solutions/" + instance + "_" + to_string(ne) + ".txt");
+        fileSolu.open(baseDir + "solutions/" + instance + "_" + to_string(ne) + ".txt");
         if (!fileSolu) {
             cout << "\n The fileSolu file can not be opened.";
             exit(1);
         }
 
-        fileCost.open("results/logs/objectives/" + instance + "_" + to_string(ne) + ".txt");
+        fileCost.open(baseDir + "objectives/" + instance + "_" + to_string(ne) + ".txt");
         if (!fileEvol) {
             cout << "\n The fileCost file can not be opened.";
             exit(1);

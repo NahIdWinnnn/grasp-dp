@@ -80,19 +80,9 @@ void GRASP::Iterate() {
 
  // Second phase of the Local Search procedure
     if(parameters.DEBUG) cout << " Improving solution "<< endl;
- // For HGRASP-DP variant skip the second phase
-//     if(parameters.CONm != "2P-HGRASP-DP") {
-//         while(solutiona.Explore(true)) continue;
-//     }
-
-//  // If DP variants are selected, apply dynamic programming template and re-evaluate
-//     if((parameters.CONm == "2P-GRASP-DP") || (parameters.CONm == "2P-HGRASP-DP")) {
-//         solutiona.DataInit();
-//         solutiona.DPExplore();
-//     }
-
     if (parameters.CONm != "2P-HGRASP-DP") {
         if (parameters.CONm == "2P-GRASP-DP") {
+            while (solutiona.Explore(true));
             int tolerance = 5;
             while (tolerance > 0) {
                 bool improved = false;
@@ -114,11 +104,17 @@ void GRASP::Iterate() {
         }
     }
     else {
-        while (true) {
+        int tolerance = 5;
+        while (tolerance > 0) {
             bool improved = false;
-            solutiona.DataInit();
-            improved = solutiona.DPExplore();
-            if (!improved) break;
+            if (solutiona.DPExplore()) {
+                improved = true;
+            }
+            if (improved) {
+                tolerance = max(tolerance + 3, 5);
+            } else {
+                tolerance--;
+            }
         }
     }
 

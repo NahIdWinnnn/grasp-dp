@@ -28,6 +28,7 @@ class Solution {
         void     Construct(double alpha);
         bool     DPExplore();
         void     Evaluate(bool objective);
+        bool     Validate();
         double   EvaluateHMP();
         bool     Explore(bool objective);
         void     DataInit();

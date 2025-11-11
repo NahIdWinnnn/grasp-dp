@@ -24,14 +24,14 @@ void Solution::Construct(double alpha) {
  // Constructs a new solution
      if     (parameters.CONm=="Rnd-GRASP"       ) ConstructiveRND();
      else if(parameters.CONm=="2P-GRASP"        ) ConstructiveGRD(alpha);
-     else if(parameters.CONm=="2P-R-GRASP"     )  ConstructiveGRD(alpha);
+     else if(parameters.CONm=="2P-R-GRASP"     ) ConstructiveGRD(alpha);
      else if(parameters.CONm=="2P-GRASP-DP"     ) ConstructiveGRD(alpha);
      else if(parameters.CONm=="2P-HGRASP-DP"    ) ConstructiveGRD(alpha);
     else {
         cout << "\n Wrong construction method.";
         cin.get();
         exit(1);
-    }
+    } 
     
 }
 
@@ -102,6 +102,72 @@ void Solution::Evaluate(bool objective) {
         }
     }
 
+}
+
+bool Solution::Validate() {
+    vector<bool> included(instance.nV, false);
+    for (unsigned k = 0; k < instance.nK; k++) {
+        for (unsigned i : sol[k]) {
+            if (i >= instance.nV) {
+                cout << "\n Invalid solution: vertex " << i << " in cluster " << k << " is out of bounds." << endl;
+                return false;
+            }
+            if (included[i]) {
+                cout << "\n Invalid solution: vertex " << i << " is included in multiple clusters." << endl;
+                return false;
+            }
+            included[i] = true;
+        }
+    }
+
+    if (std::any_of(included.begin(), included.end(), [](bool v) { return !v; })) {
+        cout << "\n Invalid solution: some vertices are not included in any cluster." << endl;
+        return false;
+    }
+
+    for (unsigned k = 0; k < instance.nK; k++) {
+        for (unsigned t = 0; t < instance.nT; t++) {
+            double wkt = 0.0;
+            for (unsigned i : sol[k]) {
+                wkt += instance.W[i][t];
+            }
+            // Use a small tolerance to account for floating-point rounding when comparing sums
+            const double rel_eps = 1e-8;
+            double scale = std::max(1.0, std::max(std::abs(wkt), std::max(std::abs(instance.WL[k][t]), std::abs(instance.WU[k][t]))));
+            double tol = rel_eps * scale;
+            if (wkt + tol < instance.WL[k][t] || wkt - tol > instance.WU[k][t]) {
+                cout << "\n Invalid solution: cluster " << k << " violates weight constraints for attribute " << t << ": lower=" << fixed << setprecision(8) << instance.WL[k][t] << ", w=" << wkt << ", upper=" << instance.WU[k][t] << ", tol=" << tol << endl;
+                return false;
+            }
+        }
+    }
+
+    for (unsigned k = 0; k < instance.nK; k++) {
+        for (unsigned i = 0; i < sol[k].size(); i++) {
+            for (unsigned j = i + 1; j < sol[k].size(); j++) {
+                if (sol[k][i] == sol[k][j]) {
+                    cout << "\n Invalid solution: duplicate vertex " << sol[k][i] << " in cluster " << k << "." << endl;
+                    return false;
+                }
+            }
+        }
+    }
+
+    double computedObj = 0.0;
+    for (unsigned k = 0; k < instance.nK; k++) {
+        for (unsigned i = 0; i < sol[k].size() - 1; i++) {
+            for (unsigned j = i + 1; j < sol[k].size(); j++) {
+                computedObj += instance.D[sol[k][i]][sol[k][j]] + instance.D[sol[k][j]][sol[k][i]];
+            }
+        }
+    }
+
+    if (std::abs(computedObj - obj) > 1e-6) {
+        cout << " Invalid solution: objective value mismatch." << endl;
+        return false;
+    }
+
+    return true;
 }
 
 double Solution::EvaluateMove(bool objective) {

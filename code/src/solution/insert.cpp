@@ -1,5 +1,7 @@
 #include "Solution.h"
 
+#include "bits/stdc++.h"
+
 // void Solution::Insert(unsigned i, unsigned k1, unsigned j, unsigned k2)  {
 
 //     unsigned v = sol[k1][i];

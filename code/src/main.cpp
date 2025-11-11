@@ -37,14 +37,19 @@ int main(int argc, const char *argv[]) {
     unsigned  i      = 0;
     auto      imax   = parameters.ALGtv;
     double    t      = 0.0;
-    //double    tmax   = parameters.ALGtv;
-    double    tmax   = instance.nV*instance.nK*instance.nT/parameters.ALGtv;
+    double    tmax   = parameters.ALGtv;
+    // double    tmax   = instance.nV*instance.nK*instance.nT/parameters.ALGtv;
     bool      finish = false;
     auto      start  = clk::now();
 
     // Abstract and parameters log
     abstract();
     LogParameters();
+
+    if ((parameters.CONm == "2P-GRASP-DP" || parameters.CONm == "2P-HGRASP-DP") and instance.nK > 10) {
+        cout << " Auto termination: The DP-based construction methods are not suitable for instances with more than 10 clusters." << endl;
+        return 0;
+    }
 
  // Algorithm
     Algorithm algorithm(pathInstance,seed);
@@ -80,6 +85,26 @@ int main(int argc, const char *argv[]) {
         }
         cout << fixed << value << endl;
     }
+
+    Solution solu = algorithm.GetBest();
+    if (!solu.Validate()) {
+        cout << " Final solution is invalid." << endl;
+        exit(1);
+    }
+    else {
+        cout << " Final solution is valid." << endl;
+        double final_cost = 0.0;
+        for (unsigned k = 0; k < instance.nK; k++) {
+            for (int i = 0; i < int(solu.sol[k].size()) - 1; i++) {
+                for (int j = i + 1; j < int(solu.sol[k].size()); j++) {
+                    final_cost += instance.D[solu.sol[k][i]][solu.sol[k][j]] + instance.D[solu.sol[k][j]][solu.sol[k][i]];
+                }
+            }
+        }
+        cout << " Final solution cost: " << fixed << setprecision(10) << solu.obj << " = " << final_cost << endl;
+        cout << " Optimization completed in " << fixed << setprecision(2) << t << " seconds" << endl;
+    }
+    
 
  // End message
     //if(instance.type=="h") cout << pathInstance << " " << seed << " Cost: " << algorithm.GetBest().EvaluateHMP() << " Optimization completed in " << fixed << setprecision(2) << t << " seconds" << endl;

@@ -18,6 +18,8 @@ bool Solution::ExploreDP() {
         dp[m][0].emplace_back(Solution(*this));
     }
 
+
+
     while (!que.empty()) {
         unsigned mask = que.front();
         que.pop();
@@ -42,19 +44,21 @@ bool Solution::ExploreDP() {
 
                 for (Solution &solution : dp[mask][i]) {
 
-                    unsigned clusterSize = solution.sol[u].size();
-                    for (unsigned pos = 0; pos < clusterSize; ++pos) {
+                    for (int pos = 0; pos < int(solution.sol[u].size()); ++pos) {
 
-                        unsigned r = rndUns(pos, clusterSize - 1);
-                        std::swap(solution.sol[u][pos], solution.sol[u][r]);
-
+                        // Random shuffle to diversify the search
+                        unsigned curSize = solution.sol[u].size();
+                        if (pos + 1 < curSize) {
+                            unsigned r = rndUns(pos, curSize - 1);
+                            std::swap(solution.sol[u][pos], solution.sol[u][r]);
+                        }
                         unsigned item = solution.sol[u][pos];
+
                         // Check feasibility of moving 'item' from cluster u to cluster v
                         if (!solution.FeasibleInsert(item, u, v)) {
                             continue;
                         }
 
-                        // If we reached here, moving 'item' from u to v is feasible
                         double deltaObj = solution.EvaluateInsert(true, item, u, v);
                         if (deltaObj < 0) {
                             solution.obj += deltaObj;
@@ -83,22 +87,19 @@ bool Solution::ExploreDP() {
         }
     }
 
-    bool improved = false;
-
     Solution bestSolution = *this;
     for (int last = 0; last < instance.nK; last++) {
         for (Solution &solution : dp[pow2 - 1][last]) {
             if (solution.obj < bestSolution.obj) {
-                // std::cout << "found better solution with obj " << solution.obj << " vs " << bestSolution.obj << std::endl;
                 std::swap(bestSolution, solution);
-                improved = true;
             }
         }
     }
 
-    if (improved) {
+    if (bestSolution.obj < this->obj) {
         *this = bestSolution;
+        return true;
     }
 
-    return improved;
+    return false;
 }
