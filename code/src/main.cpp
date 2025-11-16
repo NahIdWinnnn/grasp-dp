@@ -52,7 +52,7 @@ int main(int argc, const char *argv[]) {
     }
 
  // Algorithm
-    Algorithm algorithm(pathInstance,seed);
+    Algorithm algorithm(pathInstance, seed);
     while(!finish) {
 
      // Algorithm iteration

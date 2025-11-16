@@ -22,11 +22,11 @@ void Solution::Construct(double alpha) {
     obj = 0.0;
 
  // Constructs a new solution
-     if     (parameters.CONm=="Rnd-GRASP"       ) ConstructiveRND();
-     else if(parameters.CONm=="2P-GRASP"        ) ConstructiveGRD(alpha);
-     else if(parameters.CONm=="2P-R-GRASP"     ) ConstructiveGRD(alpha);
-     else if(parameters.CONm=="2P-GRASP-DP"     ) ConstructiveGRD(alpha);
-     else if(parameters.CONm=="2P-HGRASP-DP"    ) ConstructiveGRD(alpha);
+    if     (parameters.CONm=="Rnd-GRASP"       ) ConstructiveRND();
+    else if(parameters.CONm=="2P-GRASP"        ) ConstructiveGRD(alpha);
+    else if(parameters.CONm=="2P-R-GRASP"      ) ConstructiveGRD(alpha);
+    else if(parameters.CONm=="2P-GRASP-DP"     ) ConstructiveGRD(alpha);
+    else if(parameters.CONm=="2P-HGRASP-DP"    ) ConstructiveGRD(alpha);
     else {
         cout << "\n Wrong construction method.";
         cin.get();
