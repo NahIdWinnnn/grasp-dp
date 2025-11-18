@@ -8,18 +8,29 @@
 // Constructor/destructor
 
 Island::Island() {
-      metaheuristics = new *Metaheuristic[parameters.nMetaheuristic];
-      if (parameters.searModel == "2P-R-GRASP") {
-            for (size_t i = 0; i < parameters.nMetaheuristic; i++) {
-                  metaheuristics[i] = new GRASP();
-            }
+      metaheuristics = new Metaheuristic*[parameters.nMetaheuristic];
+      for (uint16_t i = 0; i < parameters.nMetaheuristic; i++) {
+            metaheuristics[i] = new GRASP();
       }
-      else if (parameters.searModel == "2P-R-HGRASP-DP") {
-            for (size_t i = 0; i < parameters.nMetaheuristic; i++) {
-                  metaheuristics[i] = new GRASP_DP();
-            }
+}
+
+Island::~Island() {
+      for (uint16_t i = 0; i < parameters.nMetaheuristic; i++) {
+            delete metaheuristics[i];
       }
-      else {
-            assert(parameters.searModel == "2P-R-GRASP-DP");
+      delete[] metaheuristics;
+}
+
+void Island::Iterate() {
+      for (uint16_t i = 0; i < parameters.nMetaheuristic; i++) {
+            metaheuristics[i] -> Iterate();
+      }
+}
+
+void Island::Transform() {
+      if (parameters.searModel == "2P-R-HGRASP-DP") {
+            for (uint16_t i = 0; i < parameters.nMetaheuristic; i++) {
+                  // GRASP -> GRASP_DP
+            }
       }
 }

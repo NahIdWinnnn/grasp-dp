@@ -16,6 +16,7 @@ public:
 
 // Public functions
       void Iterate();
+      void Transform();
 
 private:
 

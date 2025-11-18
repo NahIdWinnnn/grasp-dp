@@ -27,28 +27,22 @@ Algorithm::Algorithm(const std::string& pathInstance) {
                   base_directory = "results/logs/hybrid_logs/";
             }
             else {
-                  std::cout << "Invalid search model: " << parameters.searModel << "\n";
-                  std::cout << "Available search models: 2P-R-GRASP, 2P-R-HGRASP-DP, 2P-R-GRASP-DP\n";
-                  std::cin.get();
-                  std::exit(1);
+                  errorTermination("Invalid search model: " + parameters.searModel + "\nAvailable search models: 2P-R-GRASP, 2P-R-HGRASP-DP, 2P-R-GRASP-DP\n");
             }
 
             fileEvol.open(base_directory + "evolution/" + instance + "_" + std::to_string(parameters.seed) + "_" + parameters.searModel + ".txt");
             if (!fileEvol) {
-                  std::cout << "\n The fileEvol file can not be opened.";
-                  std::exit(1);
+                  errorTermination("The fileEvol file can not be opened.");
             }
 
             fileSolu.open(base_directory + "solutions/" + instance + "_" + std::to_string(parameters.seed) + "_" + parameters.searModel + ".txt");
             if (!fileSolu) {
-                  std::cout << "\n The fileSolu file can not be opened.";
-                  std::exit(1);
+                  errorTermination("The fileSolu file can not be opened.");
             }
 
             fileCost.open(base_directory + "objectives/" + instance + "_" + std::to_string(parameters.seed) + "_" + parameters.searModel + ".txt");
             if (!fileEvol) {
-                  std::cout << "\n The fileCost file can not be opened.";
-                  std::exit(1);
+                  errorTermination("The fileCost file can not be opened.");
             }
       }
 }

@@ -51,6 +51,8 @@ extern Parameters parameters;
 
 using high_clock_t = std::chrono::high_resolution_clock;
 
+// Utils
+
 void errorTermination(std::string message) {
       std::cout << message << "\n";
       std::cin.get();

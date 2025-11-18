@@ -74,9 +74,7 @@ void LoadInstance(const std::string& pathInstance) {
       file.open(pathInstance);
 
       if (!file) {
-            std::cout << "\n The instance '" << pathInstance << "' can not be opened.";
-            std::cin.get();
-            std::exit(1);
+            errorTermination("The instance '" + pathInstance + "' can not be opened.");
       }
 
       // Loads the instance parameters
@@ -124,9 +122,7 @@ void LoadInstance(const std::string& pathInstance) {
             }
       }
       else {
-            std::cout << "\n Wrong instance file.";
-            std::cin.get();
-            std::exit(1);
+            errorTermination("Wrong instance file.");
       }
 
       // Generates the weight limits for each pair (cluster,attribute)
