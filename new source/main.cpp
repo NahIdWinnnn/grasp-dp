@@ -56,11 +56,13 @@ std::string LoadInput(int argc, const char *argv[]) {
             }
 
             if (!input) {
-                  std::cout << "\n Wrong input: " << argv[i] << "\n";
+                  std::cout << "\n Invalid input: " << argv[i] << "\n";
                   std::cin.get();
                   std::exit(1);
             }
       }
+
+      std::cin.get();
 
       return pathInstance;
 }
@@ -72,7 +74,7 @@ void LoadInstance(const std::string& pathInstance) {
       file.open(pathInstance);
 
       if (!file) {
-            std::cout << "\n The instance " << pathInstance << " can not be opened.";
+            std::cout << "\n The instance '" << pathInstance << "' can not be opened.";
             std::cin.get();
             std::exit(1);
       }

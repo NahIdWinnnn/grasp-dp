@@ -3,14 +3,14 @@
       Author: Nanashi
 */
 
-#include "../metaheuristics/GRASP-DP.h"
 #include "../metaheuristics/GRASP.h"
+#include "../metaheuristics/GRASP_DP.h"
 
 class Island {
 
 public:
       
-// Constructor/destructor   
+// Constructor/destructor
       Island();
       virtual ~Island();
 

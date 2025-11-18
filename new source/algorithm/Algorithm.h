@@ -20,6 +20,9 @@ public:
 // Public functions
       void Iterate();
 
+      void printLogs();
+      void saveLogs();
+
 private:
       
 // Private attributes
@@ -29,4 +32,6 @@ private:
       std::ofstream fileCost;
       std::ofstream fileSolu;
 
+// Utils functions
+      std::vector<std::string> split(const std::string& str, char delimiter);
 };

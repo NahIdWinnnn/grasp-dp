@@ -4,6 +4,7 @@
 */
 
 #include "bits/stdc++.h"
+#include <omp.h>
 
 struct Instance {
       char type;                                      // Instance type: [p] (pollster), [t] (tsplib)
@@ -25,7 +26,7 @@ struct Parameters {
       std::string       consMoveStrat = "first";      // Strategy:                  first, best
 
       // Phase 2: Local search
-      std::string       searModel = "2P-R-HGRASP-DP"; // Search:                    2P-R-GRASP, 2P-R-HRASP-DP
+      std::string       searModel = "2P-R-HGRASP-DP"; // Search:                    2P-R-GRASP, 2P-R-HGRASP-DP, 2P-R-GRASP-DP
 
       // GRASP
       std::string       GRASPver = "random-greedy";   // Version:                   greedy-random, random-greedy
@@ -40,8 +41,9 @@ struct Parameters {
       bool              logs = true;                  // Logs
 
       // Fixed configuration
-      uint32_t          nIsland = 1;                  // Number of Islands
-      uint32_t          nMetaheuristic = 1;           // Number of Metaheuristics
+      uint16_t          nIsland = 1;                  // Number of Islands
+      uint16_t          nMetaheuristic = 1;           // Number of Metaheuristics
+      bool              parallelEnabled = true;       // Parallel island calculation
 };
 
 extern Instance   instance;
