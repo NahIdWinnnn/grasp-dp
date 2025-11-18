@@ -50,3 +50,9 @@ extern Instance   instance;
 extern Parameters parameters;
 
 using high_clock_t = std::chrono::high_resolution_clock;
+
+void errorTermination(std::string message) {
+      std::cout << message << "\n";
+      std::cin.get();
+      std::exit(-1);
+}

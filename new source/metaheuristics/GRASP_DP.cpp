@@ -9,3 +9,6 @@ GRASP_DP::GRASP_DP(): Metaheuristic() {
 }
 
 GRASP_DP::~GRASP_DP() = default;
+
+void GRASP_DP::Iterate() {
+}

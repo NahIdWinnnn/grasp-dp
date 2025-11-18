@@ -4,7 +4,7 @@
 */
 
 #include "Metaheuristic.h"
-#include "../solution/Solution.h"
+#include "../solution/DpSolution.h"
 
 struct GRASP_DP: public Metaheuristic {
 
@@ -14,4 +14,5 @@ public:
       GRASP_DP();
       ~GRASP_DP() override;
 
+      void Iterate() override;
 };

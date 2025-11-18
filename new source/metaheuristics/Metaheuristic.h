@@ -18,5 +18,4 @@ public:
 
 // Public functions
       virtual void Iterate() = 0;
-
 };

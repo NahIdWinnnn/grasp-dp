@@ -20,6 +20,6 @@ Island::Island() {
             }
       }
       else {
-            std::assert(parameters.searModel == "2P-R-GRASP-DP");
+            assert(parameters.searModel == "2P-R-GRASP-DP");
       }
 }

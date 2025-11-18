@@ -10,3 +10,6 @@ GRASP::GRASP(): Metaheuristic() {
 }
 
 GRASP::~GRASP() = default;
+
+void GRASP::Iterate() {
+}
