@@ -20,17 +20,17 @@ void Solution::validate() {
             if (partitions[i].empty()) {
                   errorTermination("Invalid solution detected: Empty cluster!");
             }
-            double accumulatedAttributes[instance.nT] = {};
+            double accumulated_attributes[instance.nT] = {};
             for (uint16_t &index : partitions[i]) {
                   if (index < 0 or instance.nV <= index) {
                         errorTermination("Invalid solution detected: Vertex does not exists!");
                   }
                   for (uint16_t t = 0; t < instance.nT; t++) {
-                        accumulatedAttributes[t] += instance.W[index][t];
+                        accumulated_attributes[t] += instance.W[index][t];
                   }
             }
             for (uint16_t t = 0; t < instance.nT; t++) {
-                  if (accumulatedAttributes[t] + parameters.eps < instance.Wl[i][t] or instance.Wu[i][t] < accumulatedAttributes[t] - parameters.eps) {
+                  if (accumulated_attributes[t] + parameters.eps < instance.Wl[i][t] or instance.Wu[i][t] < accumulated_attributes[t] - parameters.eps) {
                         errorTermination("Invalid solution detected: Out of bound!");
                   }
             }
@@ -53,5 +53,27 @@ void Solution::validate() {
 }
 
 void Solution::construct(double alpha) {
-      partitions.assign(instance.nK, std::vector<uint16_t>());
+
+      // Data assignment
+      partitions.assign(instance.nK, {});
+      delta.assign(instance.nV, std::vector<double>(instance.nK));
+      w.assign(instance.nK, std::vector<double>(instance.nT));
+      sigma.assign(instance.nV, double(0));
+      objective = 0;
+
+      // Assertion
+      if (instance.nV < instance.nK) {
+            errorTermination("Invalid input: Number of vertices(" + std::to_string(instance.nV) + ") must be greater than number of clusters(" + std::to_string(instance.nK) + ")!");
+      }
+
+      // Construction
+      if (parameters.consModel == "greedy-grasp") {
+            constructGreedy(alpha);
+      }
+      else if (parameters.consModel == "random-grasp") {
+            constructRandomized();
+      }
+      else {
+            errorTermination("Invalid configuration: Construction model \"" + parameters.consModel + "\" is not available!");
+      }
 }

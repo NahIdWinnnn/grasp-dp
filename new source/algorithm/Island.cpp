@@ -28,9 +28,9 @@ void Island::Iterate() {
 }
 
 void Island::Transform() {
-      if (parameters.searModel == "2P-R-HGRASP-DP") {
-            for (uint16_t i = 0; i < parameters.nMetaheuristic; i++) {
-                  // GRASP -> GRASP_DP
-            }
-      }
+      // if (parameters.searModel == "") {
+      //       for (uint16_t i = 0; i < parameters.nMetaheuristic; i++) {
+      //             // GRASP -> GRASP_DP
+      //       }
+      // }
 }

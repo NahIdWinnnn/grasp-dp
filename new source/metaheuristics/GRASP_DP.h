@@ -4,7 +4,7 @@
 */
 
 #include "Metaheuristic.h"
-#include "../solution/DpSolution.h"
+#include "../DPsolution/DpSolution.h"
 
 struct GRASP_DP: public Metaheuristic {
 

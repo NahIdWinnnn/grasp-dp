@@ -94,7 +94,7 @@ void LoadInstance(const std::string& pathInstance) {
       file.open(pathInstance);
 
       if (!file) {
-            errorTermination("The instance '" + pathInstance + "' can not be opened.");
+            errorTermination("The instance \"" + pathInstance + "\" can not be opened.");
       }
 
       // Loads the instance parameters

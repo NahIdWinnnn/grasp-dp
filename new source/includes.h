@@ -82,6 +82,11 @@ double randomDouble(double s, double e) {
       return distribution(engine);
 }
 
+template <typename data_t>
+data_t randomElement(std::vector<data_t> &container) {
+      return container[randomUnsignedInt(0, container.size())];
+}
+
 void errorTermination(std::string message) {
       std::cout << message << "\n";
       std::cin.get();
