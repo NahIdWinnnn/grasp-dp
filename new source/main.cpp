@@ -19,6 +19,15 @@ int main(int argc, const char *argv[]) {
       std::string instancePath = LoadInput(argc, argv);
       LoadInstance(instancePath);
 
+      // Initialization
+      std::random_device randomDevice;
+      for(uint32_t p = 0; p < omp_get_max_threads(); p++) {
+            rng.emplace_back(randomDevice());
+            if (parameters.seed) {
+                  rng[p].seed(static_cast<uint32_t>(uint64_t(parameters.seed) * (p + 1)));
+            }
+      }
+
       // Termination criteria
       uint32_t iter = 0;
       uint32_t iter_max = std::round(parameters.terminationValue);
@@ -27,7 +36,6 @@ int main(int argc, const char *argv[]) {
       bool finished = false;
       auto start_time = high_clock_t();
 
-      
 }
 
 
