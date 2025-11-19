@@ -58,6 +58,28 @@ std::vector<std::mt19937> rng;
 
 // Utils
 
+template <typename data_t>
+void randomShuffle(std::vector<data_t> &container) {
+      std::mt19937 &engine = rng[omp_get_thread_num()];
+      std::shuffle(container.begin(), container.end(), engine);
+}
+
+uint32_t randomUnsignedInt(uint32_t s, uint32_t e) {
+      assert(s < e);
+      std::mt19937 &engine = rng[omp_get_thread_num()];
+      std::uniform_int_distribution<uint32_t> distribution(s, e - 1);
+
+      return distribution(engine);
+}
+
+double randomDouble(double s, double e) {
+      assert(s + parameters.eps < e);
+      std::mt19937 &engine = rng[omp_get_thread_num()];
+      std::uniform_real_distribution<double> distribution(s, e);
+
+      return distribution(engine);
+}
+
 void errorTermination(std::string message) {
       std::cout << message << "\n";
       std::cin.get();
