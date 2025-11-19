@@ -21,34 +21,34 @@ struct Instance {
 
 struct Parameters {
       // Phase 1: Construction
-      std::string       consModel = "Grd-GRASP";      // Construction:              Grd-GRASP, Rnd-GRASP
-      std::string       consMove = "extended";        // Move:                      insert, exchange, extended
-      std::string       consMoveStrat = "first";      // Strategy:                  first, best
+      std::string       consModel = "greedy-grasp";   // Construction:              greedy-grasp, random-grasp.
+      std::string       consMove = "extended";        // Move:                      insert, exchange, extended.
+      std::string       consMoveStrat = "first";      // Strategy:                  first, best.
 
       // Phase 2: Local search
-      std::string       searModel = "DP-GRASP";       // Search:                    P2-GRASP, DP-GRASP, Hybrid
-      std::string       searMove = "extended";        // Move(GRASP):               insert, exchange, extended
-      std::string       searMoveStrat = "first";      // Strategy:                  first, best
+      std::string       searModel = "DP-GRASP";       // Search:                    P2-GRASP, DP-GRASP, Hybrid.
+      std::string       searMove = "extended";        // Move(GRASP):               insert, exchange, extended.
+      std::string       searMoveStrat = "first";      // Strategy:                  first, best.
 
       // GRASP
-      std::string       GRASPver = "random-greedy";   // Version:                   greedy-random, random-greedy
-      int               GRASPalphaDiv = 4;            // Alpha division
-      int               GRASPblock = 40;              // Block of iterations
-      int               GRASPdelta = 1;               // Delta exponent
+      std::string       GRASPver = "random-greedy";   // Version:                   greedy-random, random-greedy.
+      int               GRASPalphaDiv = 4;            // Alpha division.
+      int               GRASPblock = 40;              // Block of iterations.
+      int               GRASPdelta = 1;               // Delta exponent.
 
       // Configuration
-      std::string       terminationCriteria = "iter"; // Termination criteria:      iter, tcpu
-      double            terminationValue = 1000;      // Termination value:         number of iteration (iter), time in seconds (tcpu)
-      uint32_t          seed = 1;                     // Seed
-      bool              logs = true;                  // Logs
+      std::string       terminationCriteria = "iter"; // Termination criteria:      iter, tcpu.
+      double            terminationValue = 1000;      // Termination value:         number of iteration (iter), time in seconds (tcpu).
+      uint32_t          seed = 1;                     // Seed.
+      bool              logs = true;                  // Logs.
 
       // Fixed configuration
-      uint16_t          nIsland = 1;                  // Number of Islands
-      uint16_t          nMetaheuristic = 1;           // Number of Metaheuristics
-      bool              parallelEnabled = true;       // Parallel island calculation
+      uint16_t          nIsland = 1;                  // Number of Islands.
+      uint16_t          nMetaheuristic = 1;           // Number of Metaheuristics.
+      bool              parallelEnabled = true;       // Parallel island calculation.
 
       // Constant
-      double            eps = 1e-9;                   // Epsilon
+      double            eps = 1e-9;                   // Epsilon.
 };
 
 extern Instance   instance;
