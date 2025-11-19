@@ -20,10 +20,10 @@ void Solution::constructGreedy(double alpha) {
       }
 
       // Final assignment
-      std::vector<std::tuple<double, uint16_t, uint16_t>> extended_candidate_list;
+      std::vector<std::pair<uint16_t, uint16_t>> extended_candidate_list;
       for (uint16_t v = 0; v < instance.nV; v++) {
             for (uint16_t c = 0; c < instance.nK; c++) {
-                  extended_candidate_list.emplace_back(0, v, c);
+                  extended_candidate_list.emplace_back(v, c);
             }
       }
 
@@ -44,77 +44,67 @@ void Solution::constructGreedy(double alpha) {
       }
 }
 
-void Solution::random_greedySelection(std::vector<std::tuple<double, uint16_t, uint16_t>> &extended_candidate_list, double alpha) {
+void Solution::random_greedySelection(std::vector<std::pair<uint16_t, uint16_t>> &extended_candidate_list, double alpha) {
 
       // Initialization
       uint32_t s = std::max((1.0 - alpha) * extended_candidate_list.size(), 1.0);
       double min = std::numeric_limits<double>::max();
 
-      std::vector<std::reference_wrapper<std::tuple<double, uint16_t, uint16_t>>> restricted_candidate_list;
+      std::vector<std::reference_wrapper<std::pair<uint16_t, uint16_t>>> restricted_candidate_list;
       std::sample(extended_candidate_list.begin(), extended_candidate_list.end(), std::back_inserter(restricted_candidate_list), s, rng[omp_get_thread_num()]);
 
       // Choose pair [vertex, cluster]
-      auto* best_candidate_ptr = &restricted_candidate_list[0].get(); 
+      auto [cVertex, cCluster] = restricted_candidate_list[0].get();
       for (auto &wrapped_p : restricted_candidate_list) {
-            auto& current_tuple = wrapped_p.get();
-            if (current_tuple < *best_candidate_ptr) {
-                  best_candidate_ptr = &current_tuple;
+            auto &current_pair = wrapped_p.get();
+            if (delta[current_pair.first][current_pair.second] < delta[cVertex][cCluster]) {
+                  cVertex = current_pair.first;
+                  cCluster = current_pair.second;
             }
       }
-      auto [cCost, cVertex, cCluster] = *best_candidate_ptr;
 
       // Update solution data
       partitions[cCluster].emplace_back(cVertex);
-      objective += cCost;
+      objective += delta[cVertex][cCluster];
       addVertex(cVertex, cCluster);
 
       // Make extended candidate list reusable
-      extended_candidate_list.erase(std::partition(extended_candidate_list.begin(), extended_candidate_list.end(), [&](std::tuple<double, uint16_t, uint16_t> &x) -> bool {
-            return std::get<1>(x) != cVertex;
+      extended_candidate_list.erase(std::partition(extended_candidate_list.begin(), extended_candidate_list.end(), [&](std::pair<uint16_t, uint16_t> &x) -> bool {
+            return x.first != cVertex;
       }), extended_candidate_list.end());
-      for (auto &[cost, vertex, cluster] : extended_candidate_list) {
-            if (cluster == cCluster) {
-                  cost = delta[vertex][cCluster];
-            }
-      }
 }
 
-void Solution::greedy_randomSelection(std::vector<std::tuple<double, uint16_t, uint16_t>> &extended_candidate_list, double alpha) {
+void Solution::greedy_randomSelection(std::vector<std::pair<uint16_t, uint16_t>> &extended_candidate_list, double alpha) {
 
       // Initialization
       double min = std::numeric_limits<double>::max(), max = std::numeric_limits<double>::min();
-      for (auto &[cost, vertex, cluster] : extended_candidate_list) {
-            min = std::min(min, cost);
-            max = std::max(max, cost);
+      for (auto &[vertex, cluster] : extended_candidate_list) {
+            min = std::min(min, delta[vertex][cluster]);
+            max = std::max(max, delta[vertex][cluster]);
       }
 
       double threshold = min + (max - min) * alpha;
       std::vector<int> restricted_candidate_list;
-      for (int i = 0; i < int(extended_candidate_list.size()); i++) {
-            if (std::get<0>(extended_candidate_list[i]) + parameters.eps <= threshold) {
-                  restricted_candidate_list.emplace_back(i);
+      for (auto it = extended_candidate_list.begin(); it != extended_candidate_list.end(); ++it) {
+            if (delta[it -> first][it -> second] + parameters.eps <= threshold) {
+                  restricted_candidate_list.emplace_back(int(it - extended_candidate_list.begin()));
             }
       }
       assert(!restricted_candidate_list.empty());
 
       // Choose pair [vertex, cluster]
       int index = randomElement(restricted_candidate_list);
-      auto [cCost, cVertex, cCluster] = extended_candidate_list[index];
+      auto [cVertex, cCluster] = extended_candidate_list[index];
 
       // Update solution data
       partitions[cCluster].emplace_back(cVertex);
-      objective += cCost;
+      objective += delta[cVertex][cCluster];
       addVertex(cVertex, cCluster);
 
       // Make extended candidate list reusable
-      extended_candidate_list.erase(std::partition(extended_candidate_list.begin(), extended_candidate_list.end(), [&](std::tuple<double, uint16_t, uint16_t> &x) -> bool {
-            return std::get<1>(x) != cVertex;
+      extended_candidate_list.erase(std::partition(extended_candidate_list.begin(), extended_candidate_list.end(), [&](std::pair<uint16_t, uint16_t> &x) -> bool {
+            return x.first != cVertex;
       }), extended_candidate_list.end());
-      for (auto &[cost, vertex, cluster] : extended_candidate_list) {
-            if (cluster == cCluster) {
-                  cost = delta[vertex][cCluster];
-            }
-      }
 }
 
 void Solution::constructRandomized() {

@@ -52,8 +52,8 @@ private:
       // 1. Constructions:
       void constructGreedy(double alpha);
       void constructRandomized();
-      void greedy_randomSelection(std::vector<std::tuple<double, uint16_t, uint16_t>> &extended_candidate_list, double alpha);
-      void random_greedySelection(std::vector<std::tuple<double, uint16_t, uint16_t>> &extended_candidate_list, double alpha);
+      void greedy_randomSelection(std::vector<std::pair<uint16_t, uint16_t>> &extended_candidate_list, double alpha);
+      void random_greedySelection(std::vector<std::pair<uint16_t, uint16_t>> &extended_candidate_list, double alpha);
 
       // 2. Data modifiers:
       void addVertex(uint16_t vIndex, uint16_t cIndex);
