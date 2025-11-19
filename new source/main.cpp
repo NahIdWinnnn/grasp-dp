@@ -49,14 +49,26 @@ std::string LoadInput(int argc, const char *argv[]) {
             if (argv[i][0] == '-' and i + 1 < argc) {
                   std::string key   = argv[i];
                   std::string value = argv[i + 1];
+
                   if (key == "--instance")                  { input = true, pathInstance                    = value;                }
+
+                  // Configuration
                   if (key == "--termination_criteria")      { input = true, parameters.terminationCriteria  = value;                }
                   if (key == "--termination_value")         { input = true, parameters.terminationValue     = std::stod(value);     }
                   if (key == "--seed")                      { input = true, parameters.seed                 = std::stoi(value);     }
                   if (key == "--logs")                      { input = true, parameters.logs                 = std::stoi(value);     }
-                  if (key == "--cmodel")                    { input = true, parameters.consModel            = value;                }
-                  if (key == "--move")                      { input = true, parameters.consMove             = value;                }
-                  if (key == "--exploration")               { input = true, parameters.consMoveStrat        = value;                }
+
+                  // Phase 1: Construction
+                  if (key == "--cons_model")                { input = true, parameters.consModel            = value;                }
+                  if (key == "--cons_move")                 { input = true, parameters.consMove             = value;                }
+                  if (key == "--cons_exploration")          { input = true, parameters.consMoveStrat        = value;                }
+
+                  // Phase 2: Local search
+                  if (key == "--sear_model")                { input = true, parameters.searModel            = value;                }
+                  if (key == "--sear_move")                 { input = true, parameters.searMove             = value;                }
+                  if (key == "--sear_exploration")          { input = true, parameters.searMoveStrat        = value;                }
+
+                  // GRASP
                   if (key == "--version")                   { input = true, parameters.GRASPver             = value;                }
                   if (key == "--m")                         { input = true, parameters.GRASPalphaDiv        = std::stoi(value);     }
                   if (key == "--block")                     { input = true, parameters.GRASPblock           = std::stoi(value);     }

@@ -21,12 +21,14 @@ struct Instance {
 
 struct Parameters {
       // Phase 1: Construction
-      std::string       consModel = "2P-R-GRASP";     // Construction:              2P-R-GRASP, Rnd-GRASP
+      std::string       consModel = "Grd-GRASP";      // Construction:              Grd-GRASP, Rnd-GRASP
       std::string       consMove = "extended";        // Move:                      insert, exchange, extended
       std::string       consMoveStrat = "first";      // Strategy:                  first, best
 
       // Phase 2: Local search
-      std::string       searModel = "2P-R-HGRASP-DP"; // Search:                    2P-R-GRASP, 2P-R-HGRASP-DP, 2P-R-GRASP-DP
+      std::string       searModel = "DP-GRASP";       // Search:                    P2-GRASP, DP-GRASP, Hybrid
+      std::string       searMove = "extended";        // Move(GRASP):               insert, exchange, extended
+      std::string       searMoveStrat = "first";      // Strategy:                  first, best
 
       // GRASP
       std::string       GRASPver = "random-greedy";   // Version:                   greedy-random, random-greedy
