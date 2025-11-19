@@ -30,7 +30,7 @@ void Solution::validate() {
                   }
             }
             for (uint16_t t = 0; t < instance.nT; t++) {
-                  if (accumulatedAttributes[t] + (1e-9) < instance.Wl[i][t] and instance.Wu[i][t] < accumulatedAttributes[t] - (1e-9)) {
+                  if (accumulatedAttributes[t] + parameters.eps < instance.Wl[i][t] or instance.Wu[i][t] < accumulatedAttributes[t] - parameters.eps) {
                         errorTermination("Invalid solution detected: Out of bound!");
                   }
             }

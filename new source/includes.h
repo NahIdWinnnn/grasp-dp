@@ -44,12 +44,17 @@ struct Parameters {
       uint16_t          nIsland = 1;                  // Number of Islands
       uint16_t          nMetaheuristic = 1;           // Number of Metaheuristics
       bool              parallelEnabled = true;       // Parallel island calculation
+
+      // Constant
+      double            eps = 1e-9;                   // Epsilon
 };
 
 extern Instance   instance;
 extern Parameters parameters;
 
 using high_clock_t = std::chrono::high_resolution_clock;
+
+std::vector<std::mt19937> rng;
 
 // Utils
 
