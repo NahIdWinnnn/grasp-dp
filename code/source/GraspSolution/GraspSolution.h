@@ -28,6 +28,9 @@ public:
       double getObjective() {
             return objective;
       }
+      double getInfeasibility() {
+            return infeasibility;
+      }
 
       // Validation functions
       void validate();
@@ -53,4 +56,11 @@ private:
 
       // 2. Data modifiers:
       void addVertex(uint16_t vIndex, uint16_t cIndex);
+      void insertVertex(uint16_t vIndex, uint16_t source, uint16_t target);
+
+      // 3. Local search:
+      bool explore(bool objective);
+      bool exploreInsert(bool objective);
+      bool exploreExchange(bool objective);
+      bool exploreExtended(bool objective);
 };
