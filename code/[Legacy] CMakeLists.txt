@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.17)
 
-set(PROJECT_NAME DP_GRASP_MCGP)
-set(CODE_PATH source)
+set(PROJECT_NAME MCGP)
+set(CODE_PATH src)
 
 set(CMAKE_C_COMPILER "/usr/bin/gcc")
 set(CMAKE_CXX_COMPILER "/usr/bin/g++")
