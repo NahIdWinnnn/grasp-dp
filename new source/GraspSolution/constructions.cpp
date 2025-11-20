@@ -15,7 +15,7 @@ void Solution::constructGreedy(double alpha) {
 
       // First assignment
       for (uint16_t i = 0; i < instance.nK; i++) {
-            partitions[i].emplace_back(candidate_list.back());
+            addVertex(candidate_list.back(), i);
             candidate_list.pop_back();
       }
 
@@ -27,7 +27,7 @@ void Solution::constructGreedy(double alpha) {
             }
       }
 
-      for (size_t it = 0; it < instance.nK; it++) {
+      for (size_t it = 0; instance.nK + it < instance.nV; it++) {
             if (extended_candidate_list.empty()) {
                   errorTermination("Runtime error: Extended candidate list empty!");
             }
@@ -41,6 +41,10 @@ void Solution::constructGreedy(double alpha) {
             else {
                   errorTermination("Invalid configuration: GRASP version \"" + parameters.GRASPver + "\" is not available!");
             }
+      }
+
+      if (!extended_candidate_list.empty()) {
+            errorTermination("Logic error: ECL is not empty after procedure!");
       }
 }
 
@@ -64,8 +68,6 @@ void Solution::random_greedySelection(std::vector<std::pair<uint16_t, uint16_t>>
       }
 
       // Update solution data
-      partitions[cCluster].emplace_back(cVertex);
-      objective += delta[cVertex][cCluster];
       addVertex(cVertex, cCluster);
 
       // Make extended candidate list reusable
@@ -97,8 +99,6 @@ void Solution::greedy_randomSelection(std::vector<std::pair<uint16_t, uint16_t>>
       auto [cVertex, cCluster] = extended_candidate_list[index];
 
       // Update solution data
-      partitions[cCluster].emplace_back(cVertex);
-      objective += delta[cVertex][cCluster];
       addVertex(cVertex, cCluster);
 
       // Make extended candidate list reusable

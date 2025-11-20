@@ -9,12 +9,6 @@ Solution::Solution(double alpha) {
       construct(alpha);
 }
 
-void Solution::normalize() {
-      if (normalized) {
-            return;
-      }
-}
-
 void Solution::validate() {
       for (uint16_t i = 0; i < instance.nK; i++) {
             if (partitions[i].empty()) {
@@ -60,6 +54,7 @@ void Solution::construct(double alpha) {
       w.assign(instance.nK, std::vector<double>(instance.nT));
       sigma.assign(instance.nV, double(0));
       objective = 0;
+      infeasibility = 0;
 
       // Assertion
       if (instance.nV < instance.nK) {

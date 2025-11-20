@@ -8,19 +8,20 @@
 
 void Solution::addVertex(uint16_t vIndex, uint16_t cIndex) {
 
+      // Attributes modification
+      partitions[cIndex].emplace_back(vIndex);
+      objective += delta[vIndex][cIndex];
+
       // Association cost modification
       for (uint16_t v = 0; v < instance.nV; v++) {
             delta[v][cIndex] += instance.D[v][vIndex] + instance.D[vIndex][v];
       }
 
-      // Partition weights modification
-      for (uint16_t t = 0; t < instance.nT; t++) {
-            w[cIndex][t] += instance.W[vIndex][t];
-      }
-
       // Infeasibility score modification
+      infeasibility -= sigma[cIndex];
       sigma[cIndex] = 0;
       for (uint16_t t = 0; t < instance.nT; t++) {
+            w[cIndex][t] += instance.W[vIndex][t];
             if (w[cIndex][t] + parameters.eps < instance.Wl[cIndex][t]) {
                   sigma[cIndex] += instance.Wl[cIndex][t] - w[cIndex][t];
             }
@@ -28,4 +29,5 @@ void Solution::addVertex(uint16_t vIndex, uint16_t cIndex) {
                   sigma[cIndex] += w[cIndex][t] - instance.Wu[cIndex][t];
             }
       }
+      infeasibility += sigma[cIndex];
 }

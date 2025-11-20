@@ -30,10 +30,6 @@ public:
       }
 
       // Validation functions
-      bool isNormalized() {
-            return normalized;
-      }
-      void normalize();
       void validate();
       void construct(double alpha);
 
@@ -42,7 +38,7 @@ private:
       // Private attributes
       std::vector<std::vector<uint16_t>> partitions;
       double objective;
-      bool normalized;
+      double infeasibility;
 
       // Algorithmic attributes
       std::vector<std::vector<double>> delta;               // Association cost:          delta[vertex][cluster]
