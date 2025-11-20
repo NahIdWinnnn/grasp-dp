@@ -8,6 +8,101 @@
 
 bool GraspSolution::exploreExchange(bool objective) {
 
+      // Initialization
+      std::vector<uint16_t> fClusSet(instance.nK), sClusSet(instance.nK);
+      for (uint16_t i = 0; i < instance.nK; i++) {
+            fClusSet[i] = sClusSet[i] = i;
+      }
+      randomShuffle(fClusSet);
+      randomShuffle(sClusSet);
+
+      // Choose best [fPos, fClus, sPos, sClus]
+      bool improved = false;
+      double bestDer = 0;
+      uint16_t bestFPos, bestFClus, bestSPos, bestSClus;
+
+      for (uint16_t &fClus : fClusSet) {
+            std::vector<uint16_t> fPosSet(partitions[fClus].size());
+            std::iota(fPosSet.begin(), fPosSet.end(), 0), randomShuffle(fPosSet);
+
+            for (uint16_t &fPos : fPosSet) {
+                  uint16_t fVertex = partitions[fClus][fPos];
+
+                  for (uint16_t &sClus : sClusSet) {
+                        if (fClus == sClus) {
+                              continue;
+                        }
+
+                        std::vector<uint16_t> sPosSet(partitions[sClus].size());
+                        std::iota(sPosSet.begin(), sPosSet.end(), 0), randomShuffle(sPosSet);
+
+                        for (uint16_t &sPos : sPosSet) {
+                              uint16_t sVertex = partitions[sClus][sPos];
+
+                              if (fVertex >= sVertex) {
+                                    continue;
+                              }
+
+                              if (objective) {
+                                    if (isFeasibleExchange(fPos, fClus, sPos, sClus)) {
+                                          double newDer = evaluateExchange(objective, fPos, fClus, sPos, sClus);
+                                          if (newDer < bestDer) {
+                                                std::swap(bestDer, newDer), bestFPos = fPos, bestFClus = fClus, bestSPos = sPos, bestSClus = sClus;
+                                                improved = true;
+                                          }
+                                    }
+                              }
+                              else {
+                                    double newDer = evaluateExchange(objective, fPos, fClus, sPos, sClus);
+                                    if (newDer < bestDer) {
+                                          std::swap(bestDer, newDer), bestFPos = fPos, bestFClus = fClus, bestSPos = sPos, bestSClus = sClus;
+                                          improved = true;
+                                    }
+                              }
+
+                              if (improved) {
+                                    if (!objective and parameters.consMoveStrat == "first") {
+                                          break;
+                                    }
+                                    if (objective and parameters.searMoveStrat == "first") {
+                                          break;
+                                    }
+                              }
+                        }
+                        if (improved) {
+                              if (!objective and parameters.consMoveStrat == "first") {
+                                    break;
+                              }
+                              if (objective and parameters.searMoveStrat == "first") {
+                                    break;
+                              }
+                        }
+                  }
+                  if (improved) {
+                        if (!objective and parameters.consMoveStrat == "first") {
+                              break;
+                        }
+                        if (objective and parameters.searMoveStrat == "first") {
+                              break;
+                        }
+                  }
+            }
+            if (improved) {
+                  if (!objective and parameters.consMoveStrat == "first") {
+                        break;
+                  }
+                  if (objective and parameters.searMoveStrat == "first") {
+                        break;
+                  }
+            }
+      }
+
+      // Update solution data
+      if (improved) {
+            exchangeVertex(bestFPos, bestFClus, bestSPos, bestSClus);
+      }
+
+      return improved;
 }
 
 bool GraspSolution::isFeasibleExchange(uint16_t fPos, uint16_t fClus, uint16_t sPos, uint16_t sClus) {
