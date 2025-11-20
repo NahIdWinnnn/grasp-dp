@@ -110,7 +110,7 @@ double GraspSolution::evaluateInsert(bool objective, uint16_t vPos, uint16_t sou
                         delta_w += aux_w - instance.Wu[target][t];
                   }
             }
-            return delta_w;
+            return delta_w - sigma[source] - sigma[target];
       }
       else {
             // Evaluating objective

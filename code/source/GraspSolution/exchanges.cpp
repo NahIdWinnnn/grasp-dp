@@ -144,7 +144,7 @@ double GraspSolution::evaluateExchange(bool objective, uint16_t fPos, uint16_t f
                         delta_w += aux_w - instance.Wu[sClus][t];
                   }
             }
-            return delta_w;
+            return delta_w - sigma[fClus] - sigma[sClus];
       }
       else {
             // Evaluating objective
