@@ -91,7 +91,7 @@ bool GraspSolution::isFeasibleInsert(uint16_t vPos, uint16_t source, uint16_t ta
 double GraspSolution::evaluateInsert(bool objective, uint16_t vPos, uint16_t source, uint16_t target) {
       uint16_t vIndex = partitions[source][vPos];
       if (!objective) {
-            // Evaluating feasibility
+            // Evaluating infeasibility
             double delta_w = 0;
             for (uint16_t t = 0; t < instance.nT; t++) {
                   double aux_w = w[source][t] - instance.W[vIndex][t];
