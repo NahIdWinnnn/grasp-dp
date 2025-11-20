@@ -16,4 +16,9 @@ public:
       ~GRASP_DP() override;
 
       void Iterate() override;
+      double getBest() override;
+
+private:
+
+      DpSolution* solution;
 };

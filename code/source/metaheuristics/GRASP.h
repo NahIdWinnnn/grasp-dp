@@ -16,4 +16,13 @@ public:
       ~GRASP() override;
 
       void Iterate() override;
+      double getBest() override;
+
+private:
+
+      // Private attributes
+      uint32_t m, block, metaDelta;
+      std::vector<uint32_t> n;
+      std::vector<double> value_alpha, probabilities, sum, q;
+      GraspSolution* solution;
 };

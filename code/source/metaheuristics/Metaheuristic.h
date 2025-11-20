@@ -10,13 +10,14 @@ class Metaheuristic {
 
 public:
 
-// Constructor, destructor
+      // Constructor, destructor
       Metaheuristic();
       virtual ~Metaheuristic();
 
-// Public attributes
-      int      k = 0;
+      // Public attributes
+      uint32_t it;
 
-// Public functions
+      // Public functions
       virtual void Iterate() = 0;
+      virtual double getBest() = 0;
 };

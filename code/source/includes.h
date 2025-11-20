@@ -88,6 +88,14 @@ data_t randomElement(const std::vector<data_t> &container) {
       return container[randomUnsignedInt(0, container.size())];
 }
 
+inline uint32_t selectFromDistribution(const std::vector<double> &probabilities) {
+      std::mt19937 &engine = rng[omp_get_thread_num()];
+
+      std::discrete_distribution<> distribution(probabilities.begin(), probabilities.end());
+
+      return distribution(engine);
+}
+
 inline void errorTermination(std::string message) {
       std::cout << message << "\n";
       std::cin.get();
