@@ -70,3 +70,40 @@ void GraspSolution::insertVertex(uint16_t vPos, uint16_t source, uint16_t target
       }
       infeasibility += sigma[source] + sigma[target];
 }
+
+void GraspSolution::exchangeVertex(uint16_t fPos, uint16_t fClus, uint16_t sPos, uint16_t sClus) {
+      uint16_t fVertex = partitions[fClus][fPos];
+      uint16_t sVertex = partitions[sClus][sPos];
+
+      // Attributes modification
+      std::swap(partitions[fClus][fPos], partitions[sClus][sPos]);
+
+      // Association cost modification
+      for (uint16_t v = 0; v < instance.nV; v++) {
+            delta[v][fClus] += (instance.D[v][sVertex] + instance.D[sVertex][v]) - (instance.D[v][fVertex] + instance.D[fVertex][v]);
+            delta[v][sClus] += (instance.D[v][fVertex] + instance.D[fVertex][v]) - (instance.D[v][sVertex] + instance.D[sVertex][v]);
+      }
+
+      // Infeasibility score modification
+      infeasibility -= sigma[fClus] + sigma[sClus];
+      sigma[fClus] = sigma[fClus] = 0;
+      for (uint16_t t = 0; t < instance.nT; t++) {
+            w[fClus][t] += instance.W[sVertex][t] - instance.W[fVertex][t];
+            w[sClus][t] += instance.W[fVertex][t] - instance.W[sVertex][t];
+
+            if (w[fClus][t] + parameters.eps < instance.Wl[fClus][t]) {
+                  sigma[fClus] += instance.Wl[fClus][t] - w[fClus][t];
+            }
+            else if (instance.Wu[fClus][t] < w[fClus][t] - parameters.eps) {
+                  sigma[fClus] += w[fClus][t] - instance.Wu[fClus][t];
+            }
+
+            if (w[sClus][t] + parameters.eps < instance.Wl[sClus][t]) {
+                  sigma[sClus] += instance.Wl[sClus][t] - w[sClus][t];
+            }
+            else if (instance.Wu[sClus][t] < w[sClus][t] - parameters.eps) {
+                  sigma[sClus] += w[sClus][t] - instance.Wu[sClus][t];
+            }
+      }
+      infeasibility += sigma[fClus] + sigma[sClus];
+}
