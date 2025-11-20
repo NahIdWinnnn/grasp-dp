@@ -3,6 +3,7 @@
       Author: Nanashi
 */
 
+#pragma once
 #include "Metaheuristic.h"
 #include "../GraspSolution/GraspSolution.h"
 

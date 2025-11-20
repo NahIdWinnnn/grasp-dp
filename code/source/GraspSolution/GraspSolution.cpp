@@ -5,11 +5,11 @@
 
 #include "GraspSolution.h"
 
-Solution::Solution(double alpha) {
+GraspSolution::GraspSolution(double alpha) {
       construct(alpha);
 }
 
-void Solution::validate() {
+void GraspSolution::validate() {
       for (uint16_t i = 0; i < instance.nK; i++) {
             if (partitions[i].empty()) {
                   errorTermination("Invalid solution detected: Empty cluster!");
@@ -46,7 +46,7 @@ void Solution::validate() {
       }
 }
 
-void Solution::construct(double alpha) {
+void GraspSolution::construct(double alpha) {
 
       // Data assignment
       partitions.assign(instance.nK, {});

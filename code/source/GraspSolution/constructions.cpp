@@ -6,7 +6,7 @@
 
 #include "GraspSolution.h"
 
-void Solution::constructGreedy(double alpha) {
+void GraspSolution::constructGreedy(double alpha) {
 
       // Candidate list initialization
       std::vector<uint16_t> candidate_list(instance.nV);
@@ -48,7 +48,7 @@ void Solution::constructGreedy(double alpha) {
       }
 }
 
-void Solution::random_greedySelection(std::vector<std::pair<uint16_t, uint16_t>> &extended_candidate_list, double alpha) {
+void GraspSolution::random_greedySelection(std::vector<std::pair<uint16_t, uint16_t>> &extended_candidate_list, double alpha) {
 
       // Initialization
       uint32_t s = std::max((1.0 - alpha) * extended_candidate_list.size(), 1.0);
@@ -76,7 +76,7 @@ void Solution::random_greedySelection(std::vector<std::pair<uint16_t, uint16_t>>
       }), extended_candidate_list.end());
 }
 
-void Solution::greedy_randomSelection(std::vector<std::pair<uint16_t, uint16_t>> &extended_candidate_list, double alpha) {
+void GraspSolution::greedy_randomSelection(std::vector<std::pair<uint16_t, uint16_t>> &extended_candidate_list, double alpha) {
 
       // Initialization
       double min = std::numeric_limits<double>::max(), max = std::numeric_limits<double>::min();
@@ -107,7 +107,7 @@ void Solution::greedy_randomSelection(std::vector<std::pair<uint16_t, uint16_t>>
       }), extended_candidate_list.end());
 }
 
-void Solution::constructRandomized() {
+void GraspSolution::constructRandomized() {
 
       // Candidate list initialization
       std::vector<uint16_t> candidate_list(instance.nV);

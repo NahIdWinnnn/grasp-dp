@@ -3,6 +3,7 @@
       Author: Nanashi
 */
 
+#pragma once
 #include "bits/stdc++.h"
 #include <omp.h>
 
@@ -56,17 +57,11 @@ extern Parameters parameters;
 
 using high_clock_t = std::chrono::high_resolution_clock;
 
-std::vector<std::mt19937> rng;
+extern std::vector<std::mt19937> rng;
 
 // Utils
 
-template <typename data_t>
-void randomShuffle(std::vector<data_t> &container) {
-      std::mt19937 &engine = rng[omp_get_thread_num()];
-      std::shuffle(container.begin(), container.end(), engine);
-}
-
-uint32_t randomUnsignedInt(uint32_t s, uint32_t e) {
+inline uint32_t randomUnsignedInt(uint32_t s, uint32_t e) {
       assert(s < e);
       std::mt19937 &engine = rng[omp_get_thread_num()];
       std::uniform_int_distribution<uint32_t> distribution(s, e - 1);
@@ -74,7 +69,7 @@ uint32_t randomUnsignedInt(uint32_t s, uint32_t e) {
       return distribution(engine);
 }
 
-double randomDouble(double s, double e) {
+inline double randomDouble(double s, double e) {
       assert(s + parameters.eps < e);
       std::mt19937 &engine = rng[omp_get_thread_num()];
       std::uniform_real_distribution<double> distribution(s, e);
@@ -83,11 +78,17 @@ double randomDouble(double s, double e) {
 }
 
 template <typename data_t>
-data_t randomElement(std::vector<data_t> &container) {
+void randomShuffle(std::vector<data_t> &container) {
+      std::mt19937 &engine = rng[omp_get_thread_num()];
+      std::shuffle(container.begin(), container.end(), engine);
+}
+
+template <typename data_t>
+data_t randomElement(const std::vector<data_t> &container) {
       return container[randomUnsignedInt(0, container.size())];
 }
 
-void errorTermination(std::string message) {
+inline void errorTermination(std::string message) {
       std::cout << message << "\n";
       std::cin.get();
       std::exit(-1);

@@ -3,21 +3,21 @@
       Author: Nanashi
 */
 
+#pragma once
 #include "../includes.h"
 
-class Solution {
+class DpSolution {
 
 public:
 
       // Constructor, destructor
-      Solution();
-      virtual ~Solution();
+      DpSolution();
 
       // Operators redefinition
-      bool operator < (const Solution &solution) const {
+      bool operator < (const DpSolution &solution) const {
             return objective < solution.objective;
       }
-      bool operator > (const Solution &solution) const {
+      bool operator > (const DpSolution &solution) const {
             return objective > solution.objective;
       }
 
@@ -30,18 +30,13 @@ public:
       }
 
       // Validation functions
-      bool isNormalized() {
-            return normalized;
-      }
-      void normalize();
-      bool validate();
+      void validate();
 
 private:
 
       // Private attributes
       std::vector<std::vector<uint16_t>> partitions;
       double objective;
-      bool normalized;
 
       // Algorithmic attributes
       std::vector<std::vector<std::pair<uint16_t, uint16_t>>> bounds;

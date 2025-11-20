@@ -3,6 +3,7 @@
       Author: Nanashi
 */
 
+#pragma once
 #include "../includes.h"
 
 class Metaheuristic {

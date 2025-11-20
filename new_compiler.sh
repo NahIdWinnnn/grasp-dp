@@ -1,7 +1,7 @@
 #!/bin/bash
 
-mkdir source/build
-cd source/build
+mkdir code/build
+cd code/build
 cmake ..
 make
 cd ..

@@ -3,6 +3,7 @@
       Author: Nanashi
 */
 
+#pragma once
 #include "../metaheuristics/GRASP.h"
 #include "../metaheuristics/GRASP_DP.h"
 

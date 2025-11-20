@@ -6,7 +6,7 @@
 
 #include "GraspSolution.h"
 
-void Solution::addVertex(uint16_t vIndex, uint16_t cIndex) {
+void GraspSolution::addVertex(uint16_t vIndex, uint16_t cIndex) {
 
       // Attributes modification
       partitions[cIndex].emplace_back(vIndex);

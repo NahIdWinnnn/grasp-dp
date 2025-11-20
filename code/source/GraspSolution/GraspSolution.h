@@ -3,21 +3,21 @@
       Author: Nanashi
 */
 
+#pragma once
 #include "../includes.h"
 
-class Solution {
+class GraspSolution {
 
 public:
 
       // Constructor, destructor
-      Solution(double alpha);
-      ~Solution() = default;
+      GraspSolution(double alpha);
 
       // Operators redefinition
-      bool operator < (const Solution &solution) const {
+      bool operator < (const GraspSolution &solution) const {
             return objective < solution.objective;
       }
-      bool operator > (const Solution &solution) const {
+      bool operator > (const GraspSolution &solution) const {
             return objective > solution.objective;
       }
 

@@ -4,9 +4,11 @@
 */
 
 #include "includes.h"
+#include "algorithm/Algorithm.h"
 
 Instance    instance;
 Parameters  parameters;
+std::vector<std::mt19937> rng;
 
 std::string LoadInput(int argc, const char *argv[]);
 void        LoadInstance(const std::string& pathInstance);
@@ -36,6 +38,7 @@ int main(int argc, const char *argv[]) {
       bool finished = false;
       auto start_time = high_clock_t();
 
+      Algorithm algorithm(instancePath);
 }
 
 
@@ -81,8 +84,6 @@ std::string LoadInput(int argc, const char *argv[]) {
                   std::exit(1);
             }
       }
-
-      std::cin.get();
 
       return pathInstance;
 }
