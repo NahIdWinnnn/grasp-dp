@@ -57,6 +57,7 @@ private:
       // 2. Data modifiers:
       void addVertex(uint16_t vIndex, uint16_t cIndex);
       void insertVertex(uint16_t vIndex, uint16_t source, uint16_t target);
+      void exchangeVertex(uint16_t fPos, uint16_t fClus, uint16_t sPos, uint16_t sClus);
 
       // 3. Local search:
       bool explore(bool objective);
