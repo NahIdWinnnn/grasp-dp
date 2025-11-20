@@ -60,7 +60,17 @@ private:
 
       // 3. Local search:
       bool explore(bool objective);
+
+      // 3.1. Insertions:
       bool exploreInsert(bool objective);
+      bool isFeasibleInsert(uint16_t vPos, uint16_t source, uint16_t target);
+      double evaluateInsert(bool objective, uint16_t vPos, uint16_t source, uint16_t target);
+
+      // 3.2. Exchanges:
       bool exploreExchange(bool objective);
+      bool isFeasibleExchange(uint16_t fPos, uint16_t fClus, uint16_t sPos, uint16_t sClus);
+      double evaluateExchange(bool objective, uint16_t fPos, uint16_t fClus, uint16_t sPos, uint16_t sClus);
+
+      // 3.3. Extended:
       bool exploreExtended(bool objective);
 };

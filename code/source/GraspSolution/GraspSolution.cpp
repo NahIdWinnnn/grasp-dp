@@ -72,3 +72,16 @@ void GraspSolution::construct(double alpha) {
             errorTermination("Invalid configuration: Construction model \"" + parameters.consModel + "\" is not available!");
       }
 }
+
+bool GraspSolution::explore(bool objective) {
+      if (parameters.searMove == "insert") {
+            return exploreInsert(objective);
+      }
+      else if (parameters.searMove == "exchange") {
+            return exploreExchange(objective);
+      }
+      else {
+            assert(parameters.searMove == "extended");
+            return exploreExtended(objective);
+      }
+}
