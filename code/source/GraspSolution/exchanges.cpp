@@ -16,14 +16,20 @@ bool GraspSolution::exploreExchange(bool objective) {
       randomShuffle(fClusSet);
       randomShuffle(sClusSet);
 
+      std::vector<std::vector<uint16_t>> orders(instance.nK);
+      for (uint16_t i = 0; i < instance.nK; i++) {
+            orders[i].assign(partitions[i].size(), 0);
+            std::iota(orders[i].begin(), orders[i].end(), 0);
+            randomShuffle(orders[i]);
+      }
+
       // Choose best [fPos, fClus, sPos, sClus]
       bool improved = false;
       double bestDer = 0;
       uint16_t bestFPos, bestFClus, bestSPos, bestSClus;
 
       for (uint16_t &fClus : fClusSet) {
-            std::vector<uint16_t> fPosSet(partitions[fClus].size());
-            std::iota(fPosSet.begin(), fPosSet.end(), 0), randomShuffle(fPosSet);
+            std::vector<uint16_t> &fPosSet = orders[fClus];
 
             for (uint16_t &fPos : fPosSet) {
                   uint16_t fVertex = partitions[fClus][fPos];
@@ -33,8 +39,7 @@ bool GraspSolution::exploreExchange(bool objective) {
                               continue;
                         }
 
-                        std::vector<uint16_t> sPosSet(partitions[sClus].size());
-                        std::iota(sPosSet.begin(), sPosSet.end(), 0), randomShuffle(sPosSet);
+                        std::vector<uint16_t> &sPosSet = orders[sClus];
 
                         for (uint16_t &sPos : sPosSet) {
                               uint16_t sVertex = partitions[sClus][sPos];
@@ -62,40 +67,18 @@ bool GraspSolution::exploreExchange(bool objective) {
 
                               if (improved) {
                                     if (!objective and parameters.consMoveStrat == "first") {
-                                          break;
+                                          goto end_loops;
                                     }
                                     if (objective and parameters.searMoveStrat == "first") {
-                                          break;
+                                          goto end_loops;
                                     }
                               }
                         }
-                        if (improved) {
-                              if (!objective and parameters.consMoveStrat == "first") {
-                                    break;
-                              }
-                              if (objective and parameters.searMoveStrat == "first") {
-                                    break;
-                              }
-                        }
-                  }
-                  if (improved) {
-                        if (!objective and parameters.consMoveStrat == "first") {
-                              break;
-                        }
-                        if (objective and parameters.searMoveStrat == "first") {
-                              break;
-                        }
-                  }
-            }
-            if (improved) {
-                  if (!objective and parameters.consMoveStrat == "first") {
-                        break;
-                  }
-                  if (objective and parameters.searMoveStrat == "first") {
-                        break;
                   }
             }
       }
+
+      end_loops:;
 
       // Update solution data
       if (improved) {
