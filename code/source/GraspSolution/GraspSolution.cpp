@@ -75,13 +75,33 @@ void GraspSolution::construct(double alpha) {
 
 bool GraspSolution::explore(bool objective) {
       if (parameters.searMove == "insert") {
-            return exploreInsert(objective);
+            auto [der, vPos, source, target] = exploreInsert(objective);
+            if (der < 0) {
+                  insertVertex(vPos, source, target);
+                  return true;
+            }
       }
       else if (parameters.searMove == "exchange") {
-            return exploreExchange(objective);
+            auto [der, fPos, fClus, sPos, sClus] = exploreExchange(objective);
+            if (der < 0) {
+                  exchangeVertex(fPos, fClus, sPos, sClus);
+                  return true;
+            }
       }
       else {
             assert(parameters.searMove == "extended");
-            return exploreExtended(objective);
+            auto [derI, vPos, source, target] = exploreInsert(objective);
+            auto [derE, fPos, fClus, sPos, sClus] = exploreExchange(objective);
+            if (derI < 0 or derE < 0) {
+                  if (derI < derE) {
+                        insertVertex(vPos, source, target);
+                  }
+                  else {
+                        exchangeVertex(fPos, fClus, sPos, sClus);
+                  }
+                  return true;
+            }
       }
+
+      return false;
 }

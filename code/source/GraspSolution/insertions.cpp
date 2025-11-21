@@ -6,7 +6,7 @@
 
 #include "GraspSolution.h"
 
-bool GraspSolution::exploreInsert(bool objective) {
+std::tuple<double, uint16_t, uint16_t, uint16_t> GraspSolution::exploreInsert(bool objective) {
 
       // Initialization
       std::vector<uint16_t> sourceSet(instance.nK), targetSet(instance.nK);
@@ -17,7 +17,7 @@ bool GraspSolution::exploreInsert(bool objective) {
       // Choose best [vPos, source, target]
       bool improved = false;
       double bestDer = 0;
-      uint16_t bestPos, bestSource, bestTarget;
+      uint16_t bestPos = instance.nV, bestSource = instance.nK, bestTarget = instance.nK;
       for (uint16_t &source : sourceSet) {
             std::vector<uint16_t> vPosSet(partitions[source].size());
             std::iota(vPosSet.begin(), vPosSet.end(), 0), randomShuffle(vPosSet);
@@ -31,6 +31,7 @@ bool GraspSolution::exploreInsert(bool objective) {
                               if (isFeasibleInsert(vPos, source, target)) {
                                     double newDer = evaluateInsert(objective, vPos, source, target);
                                     if (newDer < bestDer) {
+                                          improved = true;
                                           std::swap(bestDer, newDer), bestPos = vPos, bestSource = source, bestTarget = target;
                                     }
                               }
@@ -38,44 +39,29 @@ bool GraspSolution::exploreInsert(bool objective) {
                         else {
                               double newDer = evaluateInsert(objective, vPos, source, target);
                               if (newDer < bestDer) {
+                                    improved = true;
                                     std::swap(bestDer, newDer), bestPos = vPos, bestSource = source, bestTarget = target;
                               }
                         }
 
                         if (improved) {
                               if (!objective and parameters.consMoveStrat == "first") {
-                                    break;
+                                    return std::make_tuple(bestDer, bestPos, bestSource, bestTarget);
                               }
                               if (objective and parameters.searMoveStrat == "first") {
-                                    break;
+                                    return std::make_tuple(bestDer, bestPos, bestSource, bestTarget);
                               }
                         }
-                  }
-                  if (improved) {
-                        if (!objective and parameters.consMoveStrat == "first") {
-                              break;
-                        }
-                        if (objective and parameters.searMoveStrat == "first") {
-                              break;
-                        }
-                  }
-            }
-            if (improved) {
-                  if (!objective and parameters.consMoveStrat == "first") {
-                        break;
-                  }
-                  if (objective and parameters.searMoveStrat == "first") {
-                        break;
                   }
             }
       }
 
       // Update solution data
-      if (improved) {
-            insertVertex(bestPos, bestSource, bestTarget);
-      }
+      // if (improved) {
+      //       insertVertex(bestPos, bestSource, bestTarget);
+      // }
 
-      return improved;
+      return std::make_tuple(1, bestPos, bestSource, bestTarget);
 }
 
 bool GraspSolution::isFeasibleInsert(uint16_t vPos, uint16_t source, uint16_t target) {

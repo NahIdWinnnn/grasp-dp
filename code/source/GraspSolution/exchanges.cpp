@@ -6,7 +6,7 @@
 
 #include "GraspSolution.h"
 
-bool GraspSolution::exploreExchange(bool objective) {
+std::tuple<double, uint16_t, uint16_t, uint16_t, uint16_t> GraspSolution::exploreExchange(bool objective) {
 
       // Initialization
       std::vector<uint16_t> fClusSet(instance.nK), sClusSet(instance.nK);
@@ -67,10 +67,10 @@ bool GraspSolution::exploreExchange(bool objective) {
 
                               if (improved) {
                                     if (!objective and parameters.consMoveStrat == "first") {
-                                          goto end_loops;
+                                          return std::make_tuple(bestDer, bestFPos, bestFClus, bestSPos, bestSClus);
                                     }
                                     if (objective and parameters.searMoveStrat == "first") {
-                                          goto end_loops;
+                                          return std::make_tuple(bestDer, bestFPos, bestFClus, bestSPos, bestSClus);
                                     }
                               }
                         }
@@ -78,14 +78,12 @@ bool GraspSolution::exploreExchange(bool objective) {
             }
       }
 
-      end_loops:;
-
       // Update solution data
-      if (improved) {
-            exchangeVertex(bestFPos, bestFClus, bestSPos, bestSClus);
-      }
+      // if (improved) {
+      //       exchangeVertex(bestFPos, bestFClus, bestSPos, bestSClus);
+      // }
 
-      return improved;
+      return std::make_tuple(1, bestFPos, bestFClus, bestSPos, bestSClus);;
 }
 
 bool GraspSolution::isFeasibleExchange(uint16_t fPos, uint16_t fClus, uint16_t sPos, uint16_t sClus) {

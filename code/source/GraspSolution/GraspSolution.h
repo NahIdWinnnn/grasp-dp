@@ -56,19 +56,19 @@ private:
 
       // 2. Data modifiers:
       void addVertex(uint16_t vIndex, uint16_t cIndex);
-      void insertVertex(uint16_t vIndex, uint16_t source, uint16_t target);
+      void insertVertex(uint16_t vPos, uint16_t source, uint16_t target);
       void exchangeVertex(uint16_t fPos, uint16_t fClus, uint16_t sPos, uint16_t sClus);
 
       // 3. Local search:
       bool explore(bool objective);
 
       // 3.1. Insertions:
-      bool exploreInsert(bool objective);
+      std::tuple<double, uint16_t, uint16_t, uint16_t> exploreInsert(bool objective);
       bool isFeasibleInsert(uint16_t vPos, uint16_t source, uint16_t target);
       double evaluateInsert(bool objective, uint16_t vPos, uint16_t source, uint16_t target);
 
       // 3.2. Exchanges:
-      bool exploreExchange(bool objective);
+      std::tuple<double, uint16_t, uint16_t, uint16_t, uint16_t> exploreExchange(bool objective);
       bool isFeasibleExchange(uint16_t fPos, uint16_t fClus, uint16_t sPos, uint16_t sClus);
       double evaluateExchange(bool objective, uint16_t fPos, uint16_t fClus, uint16_t sPos, uint16_t sClus);
 
