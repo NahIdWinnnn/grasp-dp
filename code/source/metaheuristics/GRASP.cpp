@@ -18,7 +18,7 @@ GRASP::GRASP(): Metaheuristic() {
       probabilities.assign(m + 1, double(1) / (m + 1));
       sum.assign(m + 1, 0);
       q.assign(m + 1, 0);
-      solution = new GraspSolution(1);
+      solution = new GraspSolution(2);
 }
 
 GRASP::~GRASP() {
@@ -26,18 +26,55 @@ GRASP::~GRASP() {
 }
 
 void GRASP::Iterate() {
-      uint32_t alpha_index = (it < m ? it : selectFromDistribution(probabilities));
+      uint32_t alpha_index = (it < m + 1 ? it : selectFromDistribution(probabilities));
       n[alpha_index] += 1;
 
       double alpha = value_alpha[alpha_index];
 
+      GraspSolution* newSolution = nullptr;
+
+      // Phase 1: Find feasible solution
       bool feasible = false;
       while (!feasible) {
-            solution -> construct(alpha);
-            solution -> validate();
-
-            // to be continued
+            delete newSolution;
+            newSolution = new GraspSolution(alpha);
+            newSolution -> validate();
+            while (newSolution -> explore(false)) {
+                  continue;
+            }
+            if (std::abs(newSolution -> getObjective()) < parameters.eps) {
+                  feasible = true;
+            }
       }
+      newSolution -> validate();
+
+      // Phase 2: Optimize solution
+      while (newSolution -> explore(true)) {
+            continue;
+      }
+      newSolution -> validate();
+
+      // Evaluate alpha
+      sum[alpha_index] += newSolution -> getObjective();
+      if ((it + 1) % block == 0) {
+            double sum_q = 0;
+            for (uint32_t i = 0; i < m + 1; i++) {
+                  double avg = sum[i] / n[i];
+                  q[i] = std::pow(solution -> getObjective() / avg, metaDelta);
+                  sum_q += q[i];
+            }
+            for (uint32_t i = 0; i < m + 1; i++) {
+                  probabilities[i] = q[i] / sum_q;
+            }
+      }
+
+      // Clear up
+      if (*newSolution < *solution) {
+            std::swap(solution, newSolution);
+      }
+      delete newSolution;
+
+      it += 1;
 }
 
 double GRASP::getObjective() const {

@@ -17,7 +17,7 @@ public:
 
       void Iterate() override;
       double getObjective() const override;
-      const std::vector<std::vector<uint16_t>>& GRASP::getPartitions() const override;
+      const std::vector<std::vector<uint16_t>>& getPartitions() const override;
 
 private:
 

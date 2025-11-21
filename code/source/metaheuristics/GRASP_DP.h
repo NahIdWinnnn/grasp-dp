@@ -16,7 +16,7 @@ public:
       ~GRASP_DP() override;
 
       void Iterate() override;
-      double getBest() override;
+      double getObjective() const override;
 
 private:
 

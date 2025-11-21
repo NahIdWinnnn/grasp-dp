@@ -13,5 +13,5 @@ GRASP_DP::~GRASP_DP() = default;
 void GRASP_DP::Iterate() {
 }
 
-double GRASP_DP::getBest() {
+double GRASP_DP::getObjective() const {
 }

@@ -6,6 +6,9 @@
 #include "GraspSolution.h"
 
 GraspSolution::GraspSolution(double alpha) {
+      if (alpha > 1) {
+            objective = std::numeric_limits<double>::max();
+      }
       construct(alpha);
 }
 
@@ -16,7 +19,7 @@ void GraspSolution::validate() {
             }
             double accumulated_attributes[instance.nT] = {};
             for (uint16_t &index : partitions[i]) {
-                  if (index < 0 or instance.nV <= index) {
+                  if (instance.nV <= index) {
                         errorTermination("Invalid solution detected: Vertex does not exists!");
                   }
                   for (uint16_t t = 0; t < instance.nT; t++) {
