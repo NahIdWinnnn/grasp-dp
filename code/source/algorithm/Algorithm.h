@@ -16,12 +16,12 @@ public:
 
 // Public attributes
       std::vector<double> accumulated_time_cpu;
-      std::vector<double> min_cost;
+      std::vector<std::vector<double>> min_cost;
 
 // Public functions
       void Iterate();
-
-      void printLogs();
+      Metaheuristic* getBest();
+      void printLogs(uint32_t &iter, double &time_used);
       void saveLogs();
 
 private:

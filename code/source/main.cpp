@@ -36,9 +36,30 @@ int main(int argc, const char *argv[]) {
       double time_used = 0;
       double time_max = parameters.terminationValue;
       bool finished = false;
-      auto start_time = high_clock_t();
+      auto start_time = std::chrono::high_resolution_clock::now();
 
       Algorithm algorithm(instancePath);
+      while (!finished) {
+            algorithm.Iterate();
+            iter += 1;
+            time_used = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - start_time).count();
+
+            if (parameters.logs > 0) {
+                  algorithm.printLogs(iter, time_used);
+            }
+            if (parameters.terminationCriteria == "iter" and iter > iter_max) {
+                  finished = true;
+            }
+            if (parameters.terminationCriteria == "tcpu" and time_used > time_max) {
+                  finished = true;
+            }
+      }
+
+      if (parameters.logs > 0) {
+            algorithm.saveLogs();
+      }
+
+      return 0;
 }
 
 

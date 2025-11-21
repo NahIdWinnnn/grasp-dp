@@ -16,7 +16,8 @@ public:
       ~GRASP() override;
 
       void Iterate() override;
-      double getBest() override;
+      double getObjective() const override;
+      const std::vector<std::vector<uint16_t>>& GRASP::getPartitions() const override;
 
 private:
 

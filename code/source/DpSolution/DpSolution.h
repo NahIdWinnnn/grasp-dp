@@ -17,9 +17,6 @@ public:
       bool operator < (const DpSolution &solution) const {
             return objective < solution.objective;
       }
-      bool operator > (const DpSolution &solution) const {
-            return objective > solution.objective;
-      }
 
       // Retrieval functions
       std::vector<std::vector<uint16_t>> getPartitions() {

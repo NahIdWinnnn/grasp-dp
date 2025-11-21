@@ -69,6 +69,59 @@ void Algorithm::Iterate() {
       }
 }
 
+Metaheuristic* Algorithm::getBest() {
+      Metaheuristic* result = islands[0] -> getBest();
+      for (uint16_t i = 1; i < parameters.nIsland; i++) {
+            Metaheuristic* candidate = islands[i] -> getBest();
+            if (*candidate < *result) {
+                  std::swap(result, candidate);
+            }
+      }
+      return result;
+}
+
+void Algorithm::printLogs(uint32_t &iter, double &time_used) {
+      accumulated_time_cpu.emplace_back(time_used);
+      min_cost.emplace_back(std::vector<double>(parameters.nIsland));
+      auto &vector_cost = min_cost.back();
+      for (uint16_t i = 0; i < parameters.nIsland; i++) {
+            vector_cost[i] = islands[i] -> getBest() -> getObjective();
+      }
+
+      // Print logs every "parameters.logs" iters.
+      if (iter % parameters.logs == 0) {
+            std::cout << "  Iteration" << std::setw(12) << iter << "      Cost";
+            for (uint16_t i = 0; i < parameters.nIsland; i++) {
+                  std::cout << std::setw(16) << std::fixed << std::setprecision(6) << vector_cost[i] << std::endl;
+            }
+      }
+}
+
+void Algorithm::saveLogs() {
+
+      // Saves the algorithm evolution to file
+      for (uint32_t i = 0; i < accumulated_time_cpu.size(); i++) {
+            fileEvol << std::setw(10) << std::fixed << std::setprecision(4) << accumulated_time_cpu[i];
+            for (double &cost : min_cost[i]) {
+                  fileEvol << std::setw(16) << std::fixed << std::setprecision(6) << cost;
+            }
+            fileEvol << std::endl;
+      }
+
+      // Saves the best cost to file
+      Metaheuristic* best = getBest();
+      fileCost << std::fixed << std::setprecision(2) << best -> getObjective();
+
+      // Saves the best solution to file
+      const auto &partitions = best -> getPartitions();
+      assert(partitions.size() == instance.nK);
+      for (uint16_t cIndex = 0; cIndex < instance.nK; cIndex++) {
+            for (size_t i = 0; i < size_t(partitions[cIndex].size()); i++) {
+                  std::cout << partitions[cIndex][i] << " \n"[i + 1 == partitions[cIndex].size()];
+            }
+      }
+}
+
 // Utils
 
 std::vector<std::string> Algorithm::split(const std::string& str, char delimiter) {

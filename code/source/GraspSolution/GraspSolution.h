@@ -13,22 +13,19 @@ public:
       // Constructor, destructor
       GraspSolution(double alpha);
 
-      // Operators redefinition
+      // Operators definition
       bool operator < (const GraspSolution &solution) const {
             return objective < solution.objective;
       }
-      bool operator > (const GraspSolution &solution) const {
-            return objective > solution.objective;
-      }
 
       // Retrieval functions
-      std::vector<std::vector<uint16_t>> getPartitions() {
+      const std::vector<std::vector<uint16_t>>& getPartitions() const {
             return partitions;
       }
-      double getObjective() {
+      double getObjective() const {
             return objective;
       }
-      double getInfeasibility() {
+      double getInfeasibility() const {
             return infeasibility;
       }
 

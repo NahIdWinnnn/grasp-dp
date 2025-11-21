@@ -40,6 +40,10 @@ void GRASP::Iterate() {
       }
 }
 
-double GRASP::getBest() {
-      // to be continued
+double GRASP::getObjective() const {
+      return solution -> getObjective();
+}
+
+const std::vector<std::vector<uint16_t>>& GRASP::getPartitions() const {
+      return solution -> getPartitions();
 }

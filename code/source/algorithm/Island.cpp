@@ -27,6 +27,16 @@ void Island::Iterate() {
       }
 }
 
+Metaheuristic* Island::getBest() {
+      Metaheuristic* result = metaheuristics[0];
+      for (uint16_t i = 1; i < parameters.nMetaheuristic; i++) {
+            if (*metaheuristics[i] < *result) {
+                  result = metaheuristics[i];
+            }
+      }
+      return result;
+}
+
 void Island::Transform() {
       // if (parameters.searModel == "") {
       //       for (uint16_t i = 0; i < parameters.nMetaheuristic; i++) {

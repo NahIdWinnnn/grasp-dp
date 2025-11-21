@@ -41,7 +41,7 @@ struct Parameters {
       std::string       terminationCriteria = "iter"; // Termination criteria:      iter, tcpu.
       double            terminationValue = 1000;      // Termination value:         number of iteration (iter), time in seconds (tcpu).
       uint32_t          seed = 1;                     // Seed.
-      bool              logs = true;                  // Logs.
+      uint32_t          logs = 1;                     // Logs.
 
       // Fixed configuration
       uint16_t          nIsland = 1;                  // Number of Islands.
@@ -54,8 +54,6 @@ struct Parameters {
 
 extern Instance   instance;
 extern Parameters parameters;
-
-using high_clock_t = std::chrono::high_resolution_clock;
 
 extern std::vector<std::mt19937> rng;
 

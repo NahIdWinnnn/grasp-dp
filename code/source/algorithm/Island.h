@@ -17,6 +17,8 @@ public:
 
 // Public functions
       void Iterate();
+      Metaheuristic* getBest();
+
       void Transform();
 
 private:
