@@ -77,6 +77,7 @@ void GraspSolution::exchangeVertex(uint16_t fPos, uint16_t fClus, uint16_t sPos,
 
       // Attributes modification
       std::swap(partitions[fClus][fPos], partitions[sClus][sPos]);
+      objective += (delta[fVertex][sClus] - delta[fVertex][fClus]) + (delta[sVertex][fClus] - delta[sVertex][sClus]) - 2 * (instance.D[fVertex][sVertex] + instance.D[sVertex][fVertex]);
 
       // Association cost modification
       for (uint16_t v = 0; v < instance.nV; v++) {
@@ -86,7 +87,7 @@ void GraspSolution::exchangeVertex(uint16_t fPos, uint16_t fClus, uint16_t sPos,
 
       // Infeasibility score modification
       infeasibility -= sigma[fClus] + sigma[sClus];
-      sigma[fClus] = sigma[fClus] = 0;
+      sigma[fClus] = sigma[sClus] = 0;
       for (uint16_t t = 0; t < instance.nT; t++) {
             w[fClus][t] += instance.W[sVertex][t] - instance.W[fVertex][t];
             w[sClus][t] += instance.W[fVertex][t] - instance.W[sVertex][t];
