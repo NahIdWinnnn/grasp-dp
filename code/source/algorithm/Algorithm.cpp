@@ -117,7 +117,7 @@ void Algorithm::saveLogs() {
       assert(partitions.size() == instance.nK);
       for (uint16_t cIndex = 0; cIndex < instance.nK; cIndex++) {
             for (size_t i = 0; i < size_t(partitions[cIndex].size()); i++) {
-                  std::cout << partitions[cIndex][i] << " \n"[i + 1 == partitions[cIndex].size()];
+                  fileSolu << partitions[cIndex][i] << " \n"[i + 1 == partitions[cIndex].size()];
             }
       }
 }
