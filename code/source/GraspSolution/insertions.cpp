@@ -56,11 +56,6 @@ std::tuple<double, uint16_t, uint16_t, uint16_t> GraspSolution::exploreInsert(bo
             }
       }
 
-      // Update solution data
-      // if (improved) {
-      //       insertVertex(bestPos, bestSource, bestTarget);
-      // }
-
       return std::make_tuple(1, bestPos, bestSource, bestTarget);
 }
 

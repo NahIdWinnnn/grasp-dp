@@ -78,11 +78,6 @@ std::tuple<double, uint16_t, uint16_t, uint16_t, uint16_t> GraspSolution::explor
             }
       }
 
-      // Update solution data
-      // if (improved) {
-      //       exchangeVertex(bestFPos, bestFClus, bestSPos, bestSClus);
-      // }
-
       return std::make_tuple(1, bestFPos, bestFClus, bestSPos, bestSClus);;
 }
 
