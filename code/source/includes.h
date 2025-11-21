@@ -49,7 +49,7 @@ struct Parameters {
       bool              parallelEnabled = true;       // Parallel island calculation.
 
       // Constant
-      double            eps = 1e-9;                   // Epsilon.
+      double            eps = 1e-7;                   // Epsilon.
 };
 
 extern Instance   instance;

@@ -49,14 +49,22 @@ void GRASP::Iterate() {
             }
       }
       newSolution -> validate();
+      if (!newSolution->checkFeasibility()) {
+            errorTermination("Invalid solution detected: Infeasible solution after Phase 1!");
+      }
 
       // Phase 2: Optimize solution
       while (newSolution -> explore(true)) {
             newSolution -> validate();
+            if (!newSolution ->checkFeasibility()) {
+                  errorTermination("Invalid solution detected: Infeasible solution during phase 2!");
+            }
             continue;
       }
       newSolution -> validate();
-      newSolution -> checkFeasibility();
+      if (!newSolution ->checkFeasibility()) {
+            errorTermination("Invalid solution detected: Infeasible solution after phase 2!");
+      }
 
       // Evaluate alpha
       sum[alpha_index] += newSolution -> getObjective();
@@ -77,6 +85,10 @@ void GRASP::Iterate() {
             std::swap(solution, newSolution);
       }
       delete newSolution;
+
+      if (!solution ->checkFeasibility()) {
+            errorTermination("Invalid solution detected: Infeasible final solution!");
+      }
 
       it += 1;
 }
