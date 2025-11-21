@@ -27,7 +27,7 @@ struct Parameters {
       std::string       consMoveStrat = "first";      // Strategy:                  first, best.
 
       // Phase 2: Local search
-      std::string       searModel = "DP-GRASP";       // Search:                    P2-GRASP, DP-GRASP, Hybrid.
+      std::string       searModel = "2P-R-GRASP";     // Search:                    2P-R-GRASP, 2P-R-HGRASP-DP, 2P-R-GRASP-DP.
       std::string       searMove = "extended";        // Move(GRASP):               insert, exchange, extended.
       std::string       searMoveStrat = "first";      // Strategy:                  first, best.
 

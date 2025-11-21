@@ -13,7 +13,7 @@ Algorithm::Algorithm(const std::string& pathInstance) {
             islands[i] = new Island();
       }
 
-      if (parameters.logs) {
+      if (parameters.logs > 0) {
             std::vector<std::string> tokens = split(pathInstance + '/', '/');
             tokens = split(tokens.back(), '.');
             std::string instance = tokens[0];
@@ -26,21 +26,21 @@ Algorithm::Algorithm(const std::string& pathInstance) {
             else if (parameters.searModel == "2P-R-GRASP-DP") {
                   base_directory = "results/logs/hybrid_logs/";
             }
-            else {
+            else if (parameters.searModel != "2P-R-GRASP") {
                   errorTermination("Invalid search model: " + parameters.searModel + "\nAvailable search models: 2P-R-GRASP, 2P-R-HGRASP-DP, 2P-R-GRASP-DP\n");
             }
 
-            fileEvol.open(base_directory + "evolution/" + instance + "_" + std::to_string(parameters.seed) + "_" + parameters.searModel + ".txt");
+            fileEvol.open(base_directory + "evolution/" + instance + "_" + std::to_string(parameters.seed) + ".txt");
             if (!fileEvol) {
                   errorTermination("The fileEvol file can not be opened.");
             }
 
-            fileSolu.open(base_directory + "solutions/" + instance + "_" + std::to_string(parameters.seed) + "_" + parameters.searModel + ".txt");
+            fileSolu.open(base_directory + "solutions/" + instance + "_" + std::to_string(parameters.seed) + ".txt");
             if (!fileSolu) {
                   errorTermination("The fileSolu file can not be opened.");
             }
 
-            fileCost.open(base_directory + "objectives/" + instance + "_" + std::to_string(parameters.seed) + "_" + parameters.searModel + ".txt");
+            fileCost.open(base_directory + "objectives/" + instance + "_" + std::to_string(parameters.seed) + ".txt");
             if (!fileEvol) {
                   errorTermination("The fileCost file can not be opened.");
             }

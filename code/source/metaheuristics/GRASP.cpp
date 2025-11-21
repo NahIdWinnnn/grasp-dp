@@ -40,9 +40,11 @@ void GRASP::Iterate() {
             newSolution = new GraspSolution(alpha);
             newSolution -> validate();
             while (newSolution -> explore(false)) {
+                  newSolution -> validate();
                   continue;
             }
-            if (std::abs(newSolution -> getObjective()) < parameters.eps) {
+            newSolution -> validate();
+            if (std::abs(newSolution -> getInfeasibility()) < parameters.eps) {
                   feasible = true;
             }
       }
@@ -50,9 +52,11 @@ void GRASP::Iterate() {
 
       // Phase 2: Optimize solution
       while (newSolution -> explore(true)) {
+            newSolution -> validate();
             continue;
       }
       newSolution -> validate();
+      newSolution -> checkFeasibility();
 
       // Evaluate alpha
       sum[alpha_index] += newSolution -> getObjective();

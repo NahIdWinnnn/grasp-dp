@@ -15,15 +15,14 @@ void GraspSolution::constructGreedy(double alpha) {
 
       // First assignment
       for (uint16_t i = 0; i < instance.nK; i++) {
-            addVertex(candidate_list.back(), i);
-            candidate_list.pop_back();
+            addVertex(candidate_list[i], i);
       }
 
       // Final assignment
       std::vector<std::pair<uint16_t, uint16_t>> extended_candidate_list;
-      for (uint16_t v = 0; v < instance.nV; v++) {
+      for (uint16_t vPos = instance.nK; vPos < instance.nV; vPos++) {
             for (uint16_t c = 0; c < instance.nK; c++) {
-                  extended_candidate_list.emplace_back(v, c);
+                  extended_candidate_list.emplace_back(candidate_list[vPos], c);
             }
       }
 

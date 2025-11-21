@@ -31,6 +31,7 @@ public:
 
       // Validation functions
       void validate();
+      void checkFeasibility();
       void construct(double alpha);
       bool explore(bool objective);
 
