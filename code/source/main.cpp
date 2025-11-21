@@ -47,10 +47,10 @@ int main(int argc, const char *argv[]) {
             if (parameters.logs > 0) {
                   algorithm.printLogs(iter, time_used);
             }
-            if (parameters.terminationCriteria == "iter" and iter > iter_max) {
+            if (parameters.terminationCriteria == "iter" and iter >= iter_max) {
                   finished = true;
             }
-            if (parameters.terminationCriteria == "tcpu" and time_used > time_max) {
+            if (parameters.terminationCriteria == "tcpu" and time_used >= time_max) {
                   finished = true;
             }
       }
