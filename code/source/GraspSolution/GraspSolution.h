@@ -68,7 +68,4 @@ private:
       std::tuple<double, uint16_t, uint16_t, uint16_t, uint16_t> exploreExchange(bool objective);
       bool isFeasibleExchange(uint16_t fPos, uint16_t fClus, uint16_t sPos, uint16_t sClus);
       double evaluateExchange(bool objective, uint16_t fPos, uint16_t fClus, uint16_t sPos, uint16_t sClus);
-
-      // 3.3. Extended:
-      bool exploreExtended(bool objective);
 };

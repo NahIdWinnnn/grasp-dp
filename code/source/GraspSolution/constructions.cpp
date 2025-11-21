@@ -119,12 +119,12 @@ void GraspSolution::constructRandomized() {
       for (uint16_t i = 0; i < instance.nV; i += min_size) {
             if (i + min_size <= instance.nV) {
                   for (uint16_t j = 0; j < instance.nK; j++) {
-                        partitions[j].emplace_back(candidate_list[i + j]);
+                        addVertex(candidate_list[i + j], j);
                   }
             }
             else {
                   for (uint16_t j = 0; i + j < instance.nV; j++) {
-                        partitions[randomUnsignedInt(0, instance.nK)].emplace_back(candidate_list[i + j]);
+                        addVertex(candidate_list[i + j], randomUnsignedInt(0, instance.nK));
                   }
             }
       }

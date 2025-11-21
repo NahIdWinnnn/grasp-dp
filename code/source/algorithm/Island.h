@@ -10,7 +10,7 @@
 class Island {
 
 public:
-      
+
 // Constructor/destructor
       Island();
       virtual ~Island();
