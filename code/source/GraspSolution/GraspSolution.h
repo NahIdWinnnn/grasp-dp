@@ -15,7 +15,7 @@ public:
 
       // Operators definition
       bool operator < (const GraspSolution &solution) const {
-            return objective < solution.objective;
+            return objective + parameters.eps < solution.objective;
       }
 
       // Retrieval functions

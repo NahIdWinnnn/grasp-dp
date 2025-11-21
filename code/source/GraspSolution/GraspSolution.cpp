@@ -175,6 +175,7 @@ bool GraspSolution::checkFeasibility() {
             }
             for (uint16_t t = 0; t < instance.nT; t++) {
                   if (accumulated_attributes[t] + parameters.eps < instance.Wl[i][t] or instance.Wu[i][t] < accumulated_attributes[t] - parameters.eps) {
+                        printDetailedDebug();
                         return false;
                   }
             }

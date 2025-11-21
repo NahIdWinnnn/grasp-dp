@@ -30,7 +30,7 @@ std::tuple<double, uint16_t, uint16_t, uint16_t> GraspSolution::exploreInsert(bo
                         if (objective) {
                               if (isFeasibleInsert(vPos, source, target)) {
                                     double newDer = evaluateInsert(objective, vPos, source, target);
-                                    if (newDer < bestDer) {
+                                    if (newDer + parameters.eps < bestDer) {
                                           improved = true;
                                           std::swap(bestDer, newDer), bestPos = vPos, bestSource = source, bestTarget = target;
                                     }
@@ -38,7 +38,7 @@ std::tuple<double, uint16_t, uint16_t, uint16_t> GraspSolution::exploreInsert(bo
                         }
                         else {
                               double newDer = evaluateInsert(objective, vPos, source, target);
-                              if (newDer < bestDer) {
+                              if (newDer + parameters.eps < bestDer) {
                                     improved = true;
                                     std::swap(bestDer, newDer), bestPos = vPos, bestSource = source, bestTarget = target;
                               }

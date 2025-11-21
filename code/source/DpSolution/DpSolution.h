@@ -15,7 +15,7 @@ public:
 
       // Operators redefinition
       bool operator < (const DpSolution &solution) const {
-            return objective < solution.objective;
+            return objective + parameters.eps < solution.objective;
       }
 
       // Retrieval functions

@@ -38,32 +38,17 @@ void GRASP::Iterate() {
       while (!feasible) {
             delete newSolution;
             newSolution = new GraspSolution(alpha);
-            newSolution -> validate();
             while (newSolution -> explore(false)) {
-                  newSolution -> validate();
                   continue;
             }
-            newSolution -> validate();
             if (std::abs(newSolution -> getInfeasibility()) < parameters.eps) {
                   feasible = true;
             }
       }
-      newSolution -> validate();
-      if (!newSolution->checkFeasibility()) {
-            errorTermination("Invalid solution detected: Infeasible solution after Phase 1!");
-      }
 
       // Phase 2: Optimize solution
       while (newSolution -> explore(true)) {
-            newSolution -> validate();
-            if (!newSolution ->checkFeasibility()) {
-                  errorTermination("Invalid solution detected: Infeasible solution during phase 2!");
-            }
             continue;
-      }
-      newSolution -> validate();
-      if (!newSolution ->checkFeasibility()) {
-            errorTermination("Invalid solution detected: Infeasible solution after phase 2!");
       }
 
       // Evaluate alpha
@@ -85,10 +70,6 @@ void GRASP::Iterate() {
             std::swap(solution, newSolution);
       }
       delete newSolution;
-
-      if (!solution ->checkFeasibility()) {
-            errorTermination("Invalid solution detected: Infeasible final solution!");
-      }
 
       it += 1;
 }

@@ -51,7 +51,7 @@ std::tuple<double, uint16_t, uint16_t, uint16_t, uint16_t> GraspSolution::explor
                               if (objective) {
                                     if (isFeasibleExchange(fPos, fClus, sPos, sClus)) {
                                           double newDer = evaluateExchange(objective, fPos, fClus, sPos, sClus);
-                                          if (newDer < bestDer) {
+                                          if (newDer + parameters.eps < bestDer) {
                                                 std::swap(bestDer, newDer), bestFPos = fPos, bestFClus = fClus, bestSPos = sPos, bestSClus = sClus;
                                                 improved = true;
                                           }
@@ -59,7 +59,7 @@ std::tuple<double, uint16_t, uint16_t, uint16_t, uint16_t> GraspSolution::explor
                               }
                               else {
                                     double newDer = evaluateExchange(objective, fPos, fClus, sPos, sClus);
-                                    if (newDer < bestDer) {
+                                    if (newDer + parameters.eps < bestDer) {
                                           std::swap(bestDer, newDer), bestFPos = fPos, bestFClus = fClus, bestSPos = sPos, bestSClus = sClus;
                                           improved = true;
                                     }
