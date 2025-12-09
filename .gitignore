@@ -1,0 +1,6 @@
+*.log
+.vscode/
+
+results/logs/
+results/summary/
+code/build
